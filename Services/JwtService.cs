@@ -4,13 +4,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using UniversityAdmission.Models;
+using MongoDB.Bson;
+using UniversityAdmission.Models.Entities;
 
 namespace UniversityAdmission.Settings
 {
     public class JwtService
     {
-        public static readonly string key = "tratatataH2#$000D!2231dawdd)))wd22";
+        public static readonly string key = "R4t14_N3_R083_80l070_P0_K0l1n0_S3cr3t_K3y";
         public static string GenerateToken(User user){
             var signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
@@ -28,7 +29,7 @@ namespace UniversityAdmission.Settings
             return tokenValue;
         }
 
-        public static int? GetUserIdFromToken(string token)
+        public static ObjectId? GetUserIdFromToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             try
@@ -46,7 +47,7 @@ namespace UniversityAdmission.Settings
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
 
                 var userIdClaim = principal.FindFirst("Id");
-                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int Id))
+                if (userIdClaim != null && ObjectId.TryParse(userIdClaim.Value, out ObjectId Id))
                 {
                     return Id;
                 }

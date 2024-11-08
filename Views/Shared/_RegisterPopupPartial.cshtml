@@ -1,0 +1,59 @@
+@using UniversityAdmission.Data.Repos
+@using UniversityAdmission.Models.Entities
+@model UniversityAdmission.Models.DTO.RegisterRequest
+
+@inject UserRepository userRepository
+
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true"
+    novalidate>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="Home" asp-action="Register" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Login">Логін</label>
+                        <input class="form-control" asp-for="Login" />
+                        <span asp-validation-for="Login" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Email">Поштова адреса</label>
+                        <input class="form-control" asp-for="Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    @* <input type="hidden" asp-for="Role" value="@Roles.Default"> *@
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Role">Права доступу</label>
+                        <select class="form-select" asp-for="Role">
+                            <option value="">Оберіть права доступу</option>
+                            @{
+                                var user = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
+                                if (user != null && user.Role == Roles.Owner)
+                                {
+                                    <option value="@Roles.Administrator">Адміністратор</option>
+                                }
+                                <option value="@Roles.Operator">Оператор</option>
+                                <option value="@Roles.Default">Користувач</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Role" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="Password">Пароль</label>
+                        <input class="form-control" asp-for="Password" type="password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" asp-for="ConfirmPassword">Повторіть пароль</label>
+                        <input class="form-control" asp-for="ConfirmPassword" type="password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Додати</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,18 +22,14 @@ namespace UniversityAdmission.Models.Entities
         [BsonElement("code")]
         public int Code { get; set; }
 
-        [BsonElement("numberOfApplicants")]
-        public int NumberOfApplicants { get; set; } = 0;
-
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId DepartmentId { get; set; }
-
-        public Department? Department { get; set; }
-
         [BsonElement("applicants")]
         public List<Applicant> Applicants { get; set; } = new List<Applicant>();
 
-        [BsonElement("specialityExams")]
-        public List<Exam> SpecialityExams { get; set; } = new List<Exam>(); //One specialty can have multiple required exams
+        // [BsonElement("requiredExams")]
+        // public List<RequiredExam> RequiredExams { get; set; } = new List<RequiredExam>(); //One specialty can have multiple required exams
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        public ObjectId DepartmentId { get; set; }
+        public Department? Department { get; set; }
     }
 }

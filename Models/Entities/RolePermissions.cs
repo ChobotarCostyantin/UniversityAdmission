@@ -11,8 +11,8 @@ namespace UniversityAdmission.Models.Entities
         private static readonly Dictionary<Roles, List<Permission>> _permissions = new()
         {
             { Roles.Owner, new List<Permission> { Permission.Create, Permission.Read, Permission.Update, Permission.Delete } },
-            { Roles.Administrator, new List<Permission> { Permission.Create, Permission.Read, Permission.Update } },
-            { Roles.Operator, new List<Permission> { Permission.Read, Permission.Update } },
+            { Roles.Administrator, new List<Permission> { Permission.Create, Permission.Read, Permission.Update, Permission.Delete } },
+            { Roles.Operator, new List<Permission> { Permission.Create, Permission.Read, Permission.Update, Permission.Delete } },
             { Roles.Default, new List<Permission> { Permission.Read } }
         };
 

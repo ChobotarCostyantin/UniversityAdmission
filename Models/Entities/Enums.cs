@@ -2,13 +2,14 @@ namespace UniversityAdmission.Models.Entities
 {
     public enum Roles
     {
-        Owner, 
-        Administrator,
-        Operator,
-        Default
+        Owner = 1,
+        Administrator = 2,
+        Operator = 3,
+        Default = 4
     }
-    
-    public enum Permission{
+
+    public enum Permission
+    {
         Create,
         Read,
         Update,

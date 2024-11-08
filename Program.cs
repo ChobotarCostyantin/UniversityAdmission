@@ -1,24 +1,31 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using UniversityAdmission.Data;
+using UniversityAdmission.Data.Repos;
 using UniversityAdmission.Models;
+using UniversityAdmission.Models.DTO;
+using UniversityAdmission.Models.Entities;
 using UniversityAdmission.Services;
 using UniversityAdmission.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
-var mongoDBSettings = builder.Configuration.GetSection("MongoDBSettings").Get<MongoDBSettings>();
+
+builder.Services.AddControllersWithViews();
+
+var mongoDBSettings = builder.Configuration.GetSection("MongoDBSettings").Get<MongoDBSettings>()!;
 
 builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 
+//* Connector to MongoDB
 builder.Services.AddDbContext<UniversityAdmissionDBContext>(options =>
     options.UseMongoDB(mongoDBSettings.ConnectionString ?? "", mongoDBSettings.DatabaseName ?? ""));
 
+//* Authentication via JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
@@ -42,9 +49,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization();
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("Owner", policy => policy.AddRequirements(
+        new PermissionRequirement(Permission.Create, Permission.Read, Permission.Update, Permission.Delete)
+    ))
+    .AddPolicy("Administrator", policy => policy.AddRequirements(
+        new PermissionRequirement(Permission.Create, Permission.Read, Permission.Update, Permission.Delete)
+    ))
+    .AddPolicy("Operator", policy => policy.AddRequirements(
+        new PermissionRequirement(Permission.Create, Permission.Read, Permission.Update, Permission.Delete)
+    ))
+    .AddPolicy("Default", policy => policy.AddRequirements(
+        new PermissionRequirement(Permission.Read)
+    ));
+
+// Service injections
+DependencyService.InjectServices(builder.Services);
 
 var app = builder.Build();
 
@@ -57,6 +77,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//* Cookie policy for better security
 app.UseCookiePolicy(new CookiePolicyOptions
 {
     MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
@@ -74,5 +96,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+DBInitializer.Initialize();
 
 app.Run();

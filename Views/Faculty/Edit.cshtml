@@ -1,0 +1,27 @@
+@using UniversityAdmission.Models.Entities
+@using UniversityAdmission.Models.DTO
+@model FacultyDTO
+@{
+    ViewData["Title"] = "Редагувати факультет";
+}
+
+<div>
+    <h2 class="text-center">Редагувати факультет</h2>
+    <form asp-action="Edit" class="w-75 mx-auto d-flex flex-column">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="Name" class="control-label ms-2 mb-1">Назва факультету</label>
+            <input asp-for="Name" class="form-control mb-1" value="@Model.Name" />
+            <span asp-validation-for="Name" class="text-danger ms-2"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label mt-2 ms-2 mb-1">Опис факультету</label>
+            <textarea asp-for="Description" class="form-control mb-1" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger ms-2"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Оновити" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

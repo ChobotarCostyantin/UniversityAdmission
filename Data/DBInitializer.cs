@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using MongoDB.Bson;
 using UniversityAdmission.Models;
 using UniversityAdmission.Models.Entities;
@@ -13,107 +14,69 @@ namespace UniversityAdmission.Data
 {
     public class DBInitializer
     {
-        public static void ReCreate(bool recreate = true)
+        public static void Initialize()
         {
             using (UniversityAdmissionDBContext context = new UniversityAdmissionDBContext())
             {
-                // Recreate the database
-                if (recreate)
-                    context.Database.EnsureDeleted();
+                context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-            }
-        }
 
-        public static void Seed(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Faculty>(f =>
-            {
-                f.HasMany(faculty => faculty.Departments)
-                    .WithOne(department => department.Faculty)
-                    .HasForeignKey(department => department.FacultyId)
-                    .HasPrincipalKey(faculty => faculty.Id)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<User>().HasData(
-                    new User 
-                    { 
-                        Login = "Admin", 
-                        Email = "admin@example.com", 
-                        Password = "admin", 
-                        Role = Roles.Administrator 
-                    },
-                    new User 
-                    {
-                        Login = "Student", 
-                        Email = "student@example.com", 
-                        Password = "student", 
-                        Role = Roles.Default 
-                    }
-                );
-
-            modelBuilder.Entity<Department>().HasData(
-                    new Department 
-                    {
-                        Name = "Department of Physics", 
-                    },
-                    new Department 
-                    {
-                        Name = "Department of Chemistry",
-                    }
-                );
-        }
-
-        public static void SeedDataInCreatedDb(IServiceProvider serviceProvider)
-        {
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<UniversityAdmissionDBContext>();
-                    // Add users
-                var users = new List<User>
+                // Add users
+                var user = new User
                 {
-                    new User 
-                    { 
-                        Login = "Admin", 
-                        Email = "admin@example.com", 
-                        Password = "admin", 
-                        Role = Roles.Administrator 
-                    },
-                    new User 
-                    { 
-                        Login = "Student", 
-                        Email = "student@example.com", 
-                        Password = "student", 
-                        Role = Roles.Default 
-                    }
+                    Login = "root",
+                    Email = "root@example.com",
+                    Password = "1234",
+                    Role = Roles.Owner
                 };
-                context.Users.AddRange(users);
+                context.Users.Add(user);
+                context.SaveChanges();
+                var user2 = new User
+                {
+                    Login = "user",
+                    Email = "user@example.com",
+                    Password = "1234",
+                    Role = Roles.Default
+                };
+                context.Users.Add(user2);
                 context.SaveChanges();
 
                 // Add faculties
-                var faculties = new List<Faculty>
+                var faculty1 = new Faculty
                 {
-                    new Faculty
-                    {
-                        Name = "Faculty of Science"
-                    }
+                    Name = "Faculty of Science",
+                    Description = "Faculty description"
                 };
-                context.Faculties.AddRange(faculties);
+                context.Faculties.Add(faculty1);
                 context.SaveChanges();
 
-                // Add departments                    
-                var departments = new List<Department>
+                var faculty2 = new Faculty
                 {
-                    new Department 
-                    { 
-                        Name = "Department of Physics", 
-                    },
-                    new Department 
-                    { 
-                        Name = "Department of Chemistry", 
-                    }
+                    Name = "Faculty of Arts",
+                    Description = "Faculty description"
                 };
-                context.Departments.AddRange(departments);
+                context.Faculties.Add(faculty2);
+                context.SaveChanges();
+
+                // Add departments
+                var department = new Department
+                {
+                    Name = "Computer Science",
+                    Description = "Department description",
+                    FacultyId = faculty1.Id,
+                    Faculty = faculty1
+                };
+                context.Departments.Add(department);
+                context.SaveChanges();
+
+                var department2 = new Department
+                {
+                    Name = "Arts",
+                    Description = "Department description",
+                    FacultyId = faculty2.Id,
+                    Faculty = faculty2
+                };
+                context.Departments.Add(department2);
                 context.SaveChanges();
             }
         }

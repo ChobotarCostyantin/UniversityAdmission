@@ -1,0 +1,49 @@
+@using UniversityAdmission.Models.Entities
+@model List<Department>
+@{
+    ViewData["Title"] = "Кафедри";
+}
+
+<div class="d-flex flex-column align-items-center w-100">
+    @if (Model.Count() == 0)
+    {
+        <h1 class="fw-bold">Кафедрів не знайдено</h1>
+        <a type="button" class="btn btn-primary my-3" asp-controller="Department" asp-action="Add">Додати кафедру</a>
+    }
+    else
+    {
+        <h1 class="fw-bold">Список кафедр</h1>
+        <a type="button" class="btn btn-primary my-3" asp-controller="Department" asp-action="Add">Додати кафедру</a>
+        <div class="w-100">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="text-start ps-4" style="width: 20%;">Ім'я</th>
+                        <th scope="col" class="text-start" style="width: 30%;">Опис</th>
+                        <th scope="col" class="text-start" style="width: 20%;">Факультет</th>
+                        <th scope="col" class="text-center" style="width: 30%;">Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var department in Model)
+                    {
+                        var faculty = ViewBag.Faculties[department.FacultyId];
+                        <tr class="align-middle">
+                            <td class="text-start ps-4 text-break">@department.Name</td>
+                            <td class="text-start text-break">@department.Description</td>
+                            <td class="text-start text-break">@faculty.Name</td>
+                            <td class="text-center text-nowrap">
+                                <a type="button" class="btn btn-success">Додати кафедру</a>
+                                <a type="button" class="btn btn-warning" asp-controller="Department" asp-action="Edit" asp-route-id="@department.Id">Редагувати</a>
+                                <form method="post" asp-action="Delete" class="d-inline">
+                                    <input type="hidden" name="id" value="@department.Id" />
+                                    <a type="submit" class="btn btn-danger">Видалити</a>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

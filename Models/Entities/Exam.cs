@@ -18,9 +18,6 @@ namespace UniversityAdmission.Models.Entities
         [BsonElement("name")]
         public string Name { get; set; } = null!;
 
-        [BsonElement("minScore")]
-        public int MinScore { get; set; } //Min score to pass
-
         [BsonElement("isCreativeContest")]
         public bool IsCreativeContest { get; set; }
     }

@@ -7,7 +7,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.EntityFrameworkCore;
 using UniversityAdmission.Models.Entities;
 
-namespace UniversityAdmission.Models
+namespace UniversityAdmission.Models.Entities
 {
     [Collection("departments")]
     public class Department
@@ -17,15 +17,15 @@ namespace UniversityAdmission.Models
         public ObjectId Id { get; set; }
 
         [BsonElement("name")]
-        public string Name { get; set; } = null!;
+        public string Name { get; set; } = string.Empty;
 
-        [BsonElement("specialties")]
+        [BsonElement("description")]
+        public string Description { get; set; } = string.Empty;
         public List<Speciality> Specialties { get; set; } = new List<Speciality>();
 
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("facultyId")]
         public ObjectId FacultyId { get; set; }
-
-        public Faculty? Faculty { get; set; }
+        public required Faculty Faculty { get; set; }
     }
 }
