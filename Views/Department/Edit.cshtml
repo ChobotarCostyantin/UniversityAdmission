@@ -1,0 +1,44 @@
+@using UniversityAdmission.Data.Repos
+@using UniversityAdmission.Models.Entities
+@using UniversityAdmission.Models.DTO
+@model DepartmentDTO
+
+@inject FacultyRepository facultyRepository
+
+@{
+    ViewData["Title"] = "Редагувати кафедру";
+}
+
+<div>
+    <h2 class="text-center">Редагувати кафедру</h2>
+    <form asp-action="Edit" class="w-75 mx-auto d-flex flex-column">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Name" class="control-label ms-2 mb-1">Назва кафедри</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger ms-2"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label ms-2 mb-1">Опис кафедри</label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger ms-2"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="FacultyId" class="control-label ms-2 mb-1">Факультет якому ця кафедра належить</label>
+            <select asp-for="FacultyId" class="form-control">
+                <option value="">Оберіть факультет</option>
+                @{
+                    var faculties = facultyRepository.GetAll().Result;
+                    foreach (var faculty in faculties)
+                    {
+                        <option value="@faculty.Id">@faculty.Name</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="FacultyId" class="text-danger ms-2"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Додати" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

@@ -26,6 +26,6 @@ namespace UniversityAdmission.Models.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("facultyId")]
         public ObjectId FacultyId { get; set; }
-        public required Faculty Faculty { get; set; }
+        public Faculty? Faculty { get; set; }
     }
 }

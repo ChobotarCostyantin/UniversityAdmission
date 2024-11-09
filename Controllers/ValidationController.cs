@@ -24,19 +24,22 @@ namespace UniversityAdmission.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [AcceptVerbs("Get", "Post")]
         public IActionResult ValidateLogin(string login)
         {
             return Json(!_userRepository.IsLoginTaken(login));
         }
 
+        [AcceptVerbs("Get", "Post")]
         public IActionResult ValidateEmail(string email)
         {
             return Json(!_userRepository.IsEmailTaken(email));
         }
 
-        public IActionResult ValidatePassword(string email, string password)
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult ValidatePassword(string login, string password)
         {
-            return Json(_userRepository.IsPasswordCorrect(email, password));
+            return Json(_userRepository.IsPasswordCorrect(login, password));
         }
     }
 }

@@ -33,9 +33,17 @@ namespace UniversityAdmission.Services
 
             var userPermissions = await userRepository.GetUserPermissionsAsync(id);
 
-            if (userPermissions.Intersect(requirement.Permissions).Any())
+            Console.WriteLine($"Required permissions: {string.Join(", ", requirement.Permissions)}");
+            Console.WriteLine($"User permissions: {string.Join(", ", userPermissions)}");
+
+            if (requirement.Permissions.All(userPermissions.Contains))
             {
+                Console.WriteLine("Access granted");
                 context.Succeed(requirement);
+            }
+            else
+            {
+                Console.WriteLine("Access denied");
             }
         }
     }

@@ -18,29 +18,31 @@ namespace UniversityAdmission.Data.Repos
             _context = context;
         }
 
-        public async Task<User> GetUser(string email, string password)
+        public async Task<User?> GetUser(string login, string password)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email && x.Password == password);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Login == login && x.Password == password);
         }
 
-        public async Task<User> GetUserByEmail(string email)
+        public async Task<User?> GetUserByEmail(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task AddUser(User user)
         {
-            _context.Users.AddAsync(user);
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
 
         public async Task<List<Permission>> GetUserPermissionsAsync(ObjectId userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
-            return RolePermissions.Permissions[user.Role];
+            var permissions = RolePermissions.Permissions[user!.Role];
+            Console.WriteLine($"User {userId} has permissions: {string.Join(", ", permissions)}");
+            return permissions;
         }
 
-        public User GetUserByToken(string token)
+        public User? GetUserByToken(string token)
         {
             var userId = JwtService.GetUserIdFromToken(token);
             var user = _context.Users.FirstOrDefault(x => x.Id == userId);
@@ -62,9 +64,9 @@ namespace UniversityAdmission.Data.Repos
             return _context.Users.Any(u => u.Email == email);
         }
 
-        public bool IsPasswordCorrect(string email, string password)
+        public bool IsPasswordCorrect(string login, string password)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            var user = _context.Users.FirstOrDefault(u => u.Login == login && u.Password == password);
             return user != null;
         }
     }

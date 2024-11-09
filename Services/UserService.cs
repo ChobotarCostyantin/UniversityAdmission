@@ -29,9 +29,9 @@ namespace UniversityAdmission.Services
             return user;
         }
 
-        public async Task<string> Login(string email, string password)
+        public async Task<string> Login(string login, string password)
         {
-            var user = await _userRepository.GetUser(email, password);
+            var user = await _userRepository.GetUser(login, password);
             return JwtService.GenerateToken(user);
         }
 

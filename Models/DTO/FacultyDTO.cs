@@ -12,12 +12,12 @@ namespace UniversityAdmission.Models.DTO
     {
         public ObjectId Id { get; set; }
         
-        [Required(ErrorMessage = "Назва обов'язкова")]
-        [StringLength(100, MinimumLength = 3, ErrorMessage = "Назва має містити від 3 до 100 символів")]
+        [Required(ErrorMessage = "Заповніть поле.")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "Назва має містити від 3 до 100 символів.")]
         public required string Name { get; set; }
 
-        [Required(ErrorMessage = "Опис обов'язковий")]
-        [StringLength(1000, MinimumLength = 3, ErrorMessage = "Опис має містити від 3 до 1000 символів")]
+        [Required(ErrorMessage = "Заповніть поле.")]
+        [StringLength(1000, MinimumLength = 3, ErrorMessage = "Опис має містити від 3 до 1000 символів.")]
         public required string Description { get; set; }
     }
 }

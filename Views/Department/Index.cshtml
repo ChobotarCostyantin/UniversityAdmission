@@ -1,26 +1,101 @@
 @using UniversityAdmission.Models.Entities
+@using MongoDB.Bson
 @model List<Department>
 @{
     ViewData["Title"] = "Кафедри";
 }
 
 <div class="d-flex flex-column align-items-center w-100">
-    @if (Model.Count() == 0)
+    <h1 class="fw-bold">Список кафедр</h1>
+    <a type="button" class="btn btn-primary my-3" asp-controller="Department" asp-action="Add">Додати кафедру</a>
+
+    <!-- Форма пошуку та фільтраціі -->
+    <div class="w-100 mb-3">
+        <form asp-action="Index" method="get" class="d-flex gap-3">
+            <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control"
+                placeholder="Пошук за назвою, описом або факультетом..." />
+            <select name="facultyFilter" class="form-select" style="width: 40%;">
+                <option value="">Всі факультети</option>
+                @foreach (var faculty in ViewBag.FacultiesList)
+                {
+                    if (ViewData["CurrentFacultyFilter"] != null &&
+                    (ObjectId?)ViewData["CurrentFacultyFilter"] == faculty.Id)
+                    {
+                        <option value="@faculty.Id" selected>@faculty.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@faculty.Id">@faculty.Name</option>
+                    }
+                }
+            </select>
+            <button type="submit" class="btn btn-primary">Пошук</button>
+            @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()) ||
+            ViewData["CurrentFacultyFilter"] != null)
+            {
+                <a asp-action="Index" class="btn btn-secondary">Очистити</a>
+            }
+        </form>
+    </div>
+
+    @if (!Model.Any())
     {
-        <h1 class="fw-bold">Кафедрів не знайдено</h1>
-        <a type="button" class="btn btn-primary my-3" asp-controller="Department" asp-action="Add">Додати кафедру</a>
+        <h2 class="fw-bold">Кафедр не знайдено</h2>
     }
     else
     {
-        <h1 class="fw-bold">Список кафедр</h1>
-        <a type="button" class="btn btn-primary my-3" asp-controller="Department" asp-action="Add">Додати кафедру</a>
         <div class="w-100">
             <table class="table table-striped">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col" class="text-start ps-4" style="width: 20%;">Ім'я</th>
-                        <th scope="col" class="text-start" style="width: 30%;">Опис</th>
-                        <th scope="col" class="text-start" style="width: 20%;">Факультет</th>
+                        <th scope="col" class="text-start ps-4" style="width: 20%;">
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                asp-route-facultyFilter="@ViewData["CurrentFacultyFilter"]"
+                                class="text-white text-decoration-none">
+                                Ім'я
+                                @if (ViewData["NameSortParam"] as string == "name_desc")
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-sort-up"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" class="text-start" style="width: 30%;">
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["DescriptionSortParam"]"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                asp-route-facultyFilter="@ViewData["CurrentFacultyFilter"]"
+                                class="text-white text-decoration-none">
+                                Опис
+                                @if (ViewData["DescriptionSortParam"] as string == "description_desc")
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-sort-up"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" class="text-start" style="width: 20%;">
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["FacultySortParam"]"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                asp-route-facultyFilter="@ViewData["CurrentFacultyFilter"]"
+                                class="text-white text-decoration-none">
+                                Факультет
+                                @if (ViewData["FacultySortParam"] as string == "faculty_desc")
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-sort-up"></i>
+                                }
+                            </a>
+                        </th>
                         <th scope="col" class="text-center" style="width: 30%;">Дії</th>
                     </tr>
                 </thead>
@@ -33,11 +108,12 @@
                             <td class="text-start text-break">@department.Description</td>
                             <td class="text-start text-break">@faculty.Name</td>
                             <td class="text-center text-nowrap">
-                                <a type="button" class="btn btn-success">Додати кафедру</a>
-                                <a type="button" class="btn btn-warning" asp-controller="Department" asp-action="Edit" asp-route-id="@department.Id">Редагувати</a>
+                                <a type="button" class="btn btn-success disabled">Додати спеціальність</a>
+                                <a type="button" class="btn btn-warning" asp-controller="Department" asp-action="Edit"
+                                    asp-route-id="@department.Id">Редагувати</a>
                                 <form method="post" asp-action="Delete" class="d-inline">
                                     <input type="hidden" name="id" value="@department.Id" />
-                                    <a type="submit" class="btn btn-danger">Видалити</a>
+                                    <input type="submit" class="btn btn-danger" value="Видалити" />
                                 </form>
                             </td>
                         </tr>

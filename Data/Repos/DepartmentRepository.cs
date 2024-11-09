@@ -25,7 +25,7 @@ namespace UniversityAdmission.Data.Repos
                 Id = dto.Id,
                 Name = dto.Name,
                 Description = dto.Description,
-                Faculty = dto.Faculty
+                FacultyId = dto.FacultyId
             };
             _context.Departments.Add(department);
             await _context.SaveChangesAsync();
@@ -62,7 +62,7 @@ namespace UniversityAdmission.Data.Repos
             {
                 department.Name = dto.Name;
                 department.Description = dto.Description;
-                department.Faculty = dto.Faculty;
+                department.FacultyId = dto.FacultyId;
 
                 _context.Departments.Update(department);
                 await _context.SaveChangesAsync();

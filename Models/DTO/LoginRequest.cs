@@ -9,13 +9,12 @@ namespace UniversityAdmission.Models.DTO
 {
     public class LoginRequest
     {
-        [Required(ErrorMessage = "Заповніть поле."),]
-        [EmailAddress(ErrorMessage = "Некоректна адреса електронної пошти.")]
-        public string Email { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Заповніть поле.")]
+        public string Login { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Заповніть поле."),]
         [DataType(DataType.Password)]
-        [Remote(action: "ValidatePassword", controller: "Validation", AdditionalFields = nameof(Email), ErrorMessage = "Невірний пароль.")]
+        [Remote(action: "ValidatePassword", controller: "Validation", AdditionalFields = nameof(Login), ErrorMessage = "Невірний логін або пароль.")]
         public string Password { get; set; } = string.Empty;
     }
 }

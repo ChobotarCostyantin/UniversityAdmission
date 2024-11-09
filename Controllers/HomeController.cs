@@ -5,6 +5,7 @@ using UniversityAdmission.Data.Repos;
 using UniversityAdmission.Models.DTO;
 using UniversityAdmission.Models;
 using UniversityAdmission.Services;
+using UniversityAdmission.Settings;
 
 namespace UniversityAdmission.Controllers;
 
@@ -31,7 +32,8 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
+    [Authorize]
     [HttpPost]
     public IActionResult Logout()
     {
@@ -50,7 +52,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var token = await _userService.Login(request.Email, request.Password) ?? throw new Exception("Невірний логін або пароль");
+        var token = await _userService.Login(request.Login, request.Password);
         Response.Cookies.Append("access-cookie", token);
         return RedirectToAction("Index");
     }

@@ -20,6 +20,5 @@ namespace UniversityAdmission.Models.Entities
 
         [BsonElement("description")]
         public string Description { get; set; } = string.Empty;
-        public List<Department> Departments { get; set; } = new List<Department>();
     }
 }
