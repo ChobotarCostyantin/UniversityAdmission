@@ -21,11 +21,9 @@ namespace UniversityAdmission.Models.Entities
 
         [BsonElement("description")]
         public string Description { get; set; } = string.Empty;
-        public List<Speciality> Specialties { get; set; } = new List<Speciality>();
 
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("facultyId")]
         public ObjectId FacultyId { get; set; }
-        public Faculty? Faculty { get; set; }
     }
 }

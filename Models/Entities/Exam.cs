@@ -16,7 +16,13 @@ namespace UniversityAdmission.Models.Entities
         public ObjectId Id { get; set; }
 
         [BsonElement("name")]
-        public string Name { get; set; } = null!;
+        public string Name { get; set; } = string.Empty;
+
+        [BsonElement("subject")]
+        public string Subject { get; set; } = string.Empty;
+
+        [BsonElement("minScore")]
+        public uint MinScore { get; set; } //to pass
 
         [BsonElement("isCreativeContest")]
         public bool IsCreativeContest { get; set; }

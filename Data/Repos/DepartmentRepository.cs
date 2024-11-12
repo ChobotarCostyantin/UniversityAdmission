@@ -13,9 +13,11 @@ namespace UniversityAdmission.Data.Repos
     public class DepartmentRepository
     {
         private readonly UniversityAdmissionDBContext _context;
-        public DepartmentRepository(UniversityAdmissionDBContext context)
+        private readonly SpecialityRepository _specialityRepository;
+        public DepartmentRepository(UniversityAdmissionDBContext context, SpecialityRepository specialityRepository)
         {
             _context = context;
+            _specialityRepository = specialityRepository;
         }
 
         public async Task Create(DepartmentDTO dto)
@@ -34,8 +36,10 @@ namespace UniversityAdmission.Data.Repos
         public async Task DeleteByIdAsync(ObjectId id)
         {
             var specialities = _context.Specialities.Where(x => x.DepartmentId == id);
-            _context.Specialities.RemoveRange(specialities);
-            await _context.SaveChangesAsync();
+            foreach (var speciality in specialities)
+            {
+                await _specialityRepository.DeleteByIdAsync(speciality.Id);
+            }
 
             var department = await _context.Departments.FindAsync(id);
             if (department != null)

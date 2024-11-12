@@ -15,17 +15,18 @@ namespace UniversityAdmission.Models.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id { get; set; }
 
-        [BsonElement("status")]
-        public bool Status { get; set; }
-
         [BsonElement("applicantId")]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId ApplicantId { get; set; }
-        public Applicant? Applicant { get; set; }
 
         [BsonElement("examId")]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId ExamId { get; set; }
-        public Exam? Exam { get; set; }
+
+        [BsonElement("score")]
+        public double Score { get; set; }
+
+        [BsonElement("status")]
+        public bool Status { get; set; }
     }
 }

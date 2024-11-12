@@ -18,13 +18,13 @@ namespace UniversityAdmission.Models.Entities
         public ObjectId Id { get; set; }
 
         [BsonElement("login")]
-        public string Login { get; set; } = null!;
+        public string Login { get; set; } = string.Empty;
 
         [BsonElement("email")]
-        public string Email { get; set; } = null!;
+        public string Email { get; set; } = string.Empty;
 
         [BsonElement("password")]
-        public string Password { get; set; } = null!;
+        public string Password { get; set; } = string.Empty;
 
         [BsonElement("role")]
         public Roles Role { get; set; }

@@ -1,0 +1,38 @@
+@using MongoDB.Bson
+@using UniversityAdmission.Data.Repos
+@using UniversityAdmission.Models.Entities
+@using UniversityAdmission.Models.DTO
+@model RequiredExamDTO
+
+@inject ExamRepository examRepository
+@inject RequiredExamRepository requiredExamRepository
+
+@{
+    ViewData["Title"] = "Додати екзамен";
+    var exams = examRepository.GetAll().Result;
+    var id = ViewContext.RouteData.Values["id"];
+    var requiredExams = requiredExamRepository.GetRequiredExamsFromSpeciality(ObjectId.Parse(id!.ToString())).Result;
+}
+
+<div>
+    <form asp-controller="RequiredExam" asp-action="Add" class="needs-validation" novalidate>
+        <input type="hidden" value="@id" asp-for="SpecialityId" />
+        <div class="mb-3">
+            <label class="form-label ms-2 mb-1" asp-for="ExamId">Оберіть екзамен</label>
+            <select asp-for="ExamId" class="form-control">
+                <option value="">Оберіть екзамен</option>
+                @foreach (var exam in exams)
+                {
+                    if (!requiredExams.Any(re => re.ExamId == exam.Id))
+                    {
+                        <option value="@exam.Id">@exam.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <input type="submit" value="Додати" class="btn btn-primary" />
+            <a asp-controller="RequiredExam" asp-route-id="@id" asp-action="Index" class="btn btn-secondary ms-2">Назад</a>
+        </div>
+    </form>
+</div>

@@ -7,15 +7,18 @@ using MongoDB.Bson;
 using UniversityAdmission.Models.DTO;
 using UniversityAdmission.Models.Entities;
 using UniversityAdmission.Services;
+using ZstdSharp.Unsafe;
 
 namespace UniversityAdmission.Data.Repos
 {
     public class FacultyRepository
     {
         private readonly UniversityAdmissionDBContext _context;
-        public FacultyRepository(UniversityAdmissionDBContext context)
+        private readonly DepartmentRepository _departmentRepository;
+        public FacultyRepository(UniversityAdmissionDBContext context, DepartmentRepository departmentRepository)
         {
             _context = context;
+            _departmentRepository = departmentRepository;
         }
         public async Task Create(FacultyDTO dto)
         {
@@ -32,8 +35,10 @@ namespace UniversityAdmission.Data.Repos
         public async Task DeleteByIdAsync(ObjectId id)
         {
             var departments = _context.Departments.Where(x => x.FacultyId == id);
-            _context.Departments.RemoveRange(departments);
-            await _context.SaveChangesAsync();
+            foreach (var department in departments)
+            {
+                await _departmentRepository.DeleteByIdAsync(department.Id);
+            }
 
             var faculty = await _context.Faculties.FindAsync(id);
             if (faculty != null)
@@ -56,7 +61,8 @@ namespace UniversityAdmission.Data.Repos
         public async Task Update(FacultyDTO dto)
         {
             var faculty = await _context.Faculties.FirstOrDefaultAsync(x => x.Id == dto.Id);
-            if (faculty != null) {
+            if (faculty != null)
+            {
                 faculty.Name = dto.Name;
                 faculty.Description = dto.Description;
 

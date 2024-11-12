@@ -32,13 +32,12 @@ namespace UniversityAdmission.Services
         public async Task<string> Login(string login, string password)
         {
             var user = await _userRepository.GetUser(login, password);
-            return JwtService.GenerateToken(user);
+            return JwtService.GenerateToken(user!);
         }
 
         public bool IsSignedIn(string token)
         {
-            var user = _userRepository.GetUserByToken(token);
-            return user != null;
+            return _userRepository.GetUserByToken(token) != null;
         }
     }
 }

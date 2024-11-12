@@ -6,6 +6,7 @@ using UniversityAdmission.Models.DTO;
 using UniversityAdmission.Models;
 using UniversityAdmission.Services;
 using UniversityAdmission.Settings;
+using UniversityAdmission.Models.Entities;
 
 namespace UniversityAdmission.Controllers;
 

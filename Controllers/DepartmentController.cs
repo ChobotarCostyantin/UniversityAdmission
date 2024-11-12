@@ -23,48 +23,46 @@ namespace UniversityAdmission.Controllers
         }
 
         public async Task<IActionResult> Index(string searchString, string sortOrder, ObjectId? facultyFilter)
-    {
-        ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-        ViewData["DescriptionSortParam"] = sortOrder == "description" ? "description_desc" : "description";
-        ViewData["FacultySortParam"] = sortOrder == "faculty" ? "faculty_desc" : "faculty";
-        ViewData["CurrentFilter"] = searchString;
-        ViewData["CurrentFacultyFilter"] = facultyFilter;
-
-        var departments = await _departmentRepository.GetAll();
-        var faculties = await _facultyRepository.GetAll();
-        var facultyDict = faculties.ToDictionary(f => f.Id, f => f);
-        ViewBag.Faculties = facultyDict;
-        ViewBag.FacultiesList = faculties; // Для выпадающего списка
-
-        // Применяем фильтр по факультету
-        if (facultyFilter.HasValue && facultyFilter.Value != ObjectId.Empty)
         {
-            departments = departments.Where(d => d.FacultyId == facultyFilter.Value).ToList();
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DescriptionSortParam"] = sortOrder == "description" ? "description_desc" : "description";
+            ViewData["FacultySortParam"] = sortOrder == "faculty" ? "faculty_desc" : "faculty";
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFacultyFilter"] = facultyFilter;
+
+            var departments = await _departmentRepository.GetAll();
+            var faculties = await _facultyRepository.GetAll();
+            var facultyDict = faculties.ToDictionary(f => f.Id, f => f);
+            ViewBag.Faculties = facultyDict;
+            ViewBag.FacultiesList = faculties; // Для випадаючого списка
+
+            // Виконуємо фільтрацію по факультету
+            if (facultyFilter.HasValue && facultyFilter.Value != ObjectId.Empty)
+            {
+                departments = departments.Where(d => d.FacultyId == facultyFilter.Value).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                departments = departments.Where(d =>
+                    d.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    d.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    facultyDict[d.FacultyId].Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            departments = sortOrder switch
+            {
+                "name_desc" => departments.OrderByDescending(d => d.Name).ToList(),
+                "description" => departments.OrderBy(d => d.Description).ToList(),
+                "description_desc" => departments.OrderByDescending(d => d.Description).ToList(),
+                "faculty" => departments.OrderBy(d => facultyDict[d.FacultyId].Name).ToList(),
+                "faculty_desc" => departments.OrderByDescending(d => facultyDict[d.FacultyId].Name).ToList(),
+                _ => departments.OrderBy(d => d.Name).ToList()
+            };
+
+            return View(departments);
         }
-
-        // Применяем поиск
-        if (!string.IsNullOrEmpty(searchString))
-        {
-            departments = departments.Where(d => 
-                d.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) || 
-                d.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                facultyDict[d.FacultyId].Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-        }
-
-        // Применяем сортировку
-        departments = sortOrder switch
-        {
-            "name_desc" => departments.OrderByDescending(d => d.Name).ToList(),
-            "description" => departments.OrderBy(d => d.Description).ToList(),
-            "description_desc" => departments.OrderByDescending(d => d.Description).ToList(),
-            "faculty" => departments.OrderBy(d => facultyDict[d.FacultyId].Name).ToList(),
-            "faculty_desc" => departments.OrderByDescending(d => facultyDict[d.FacultyId].Name).ToList(),
-            _ => departments.OrderBy(d => d.Name).ToList()
-        };
-
-        return View(departments);
-    }
 
         [HttpGet]
         public IActionResult Add()

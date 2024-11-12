@@ -17,19 +17,13 @@ namespace UniversityAdmission.Models.Entities
         public ObjectId Id { get; set; }
 
         [BsonElement("name")]
-        public string Name { get; set; } = null!;
+        public string Name { get; set; } = string.Empty;
 
-        [BsonElement("code")]
-        public int Code { get; set; }
-
-        [BsonElement("applicants")]
-        public List<Applicant> Applicants { get; set; } = new List<Applicant>();
-
-        // [BsonElement("requiredExams")]
-        // public List<RequiredExam> RequiredExams { get; set; } = new List<RequiredExam>(); //One specialty can have multiple required exams
+        [BsonElement("description")]
+        public string Description { get; set; } = string.Empty;
 
         [BsonRepresentation(BsonType.ObjectId)]
+        [BsonElement("departmentId")]
         public ObjectId DepartmentId { get; set; }
-        public Department? Department { get; set; }
     }
 }

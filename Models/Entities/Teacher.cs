@@ -8,21 +8,17 @@ using MongoDB.EntityFrameworkCore;
 
 namespace UniversityAdmission.Models.Entities
 {
-    [Collection("requiredExams")]
-    public class RequiredExam
+    [Collection("teachers")]
+    public class Teacher
     {
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id { get; set; }
 
-        [BsonElement("examId")]
-        public ObjectId ExamId { get; set; }
+        [BsonElement("fullName")]
+        public string FullName { get; set; } = string.Empty;
 
-        [BsonElement("specialityId")]
-        public ObjectId SpecialityId { get; set; }
-
-        [BsonIgnore]
-        public Exam? Exam { get; set; }
+        [BsonElement("speciality")]
+        public string Speciality { get; set; } = string.Empty;
     }
 }

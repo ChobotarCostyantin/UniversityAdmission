@@ -7,6 +7,7 @@
 
 @{
     ViewData["Title"] = "Додати кафедру";
+    var faculties = facultyRepository.GetAll().Result;
 }
 
 <div>
@@ -26,18 +27,16 @@
             <label asp-for="FacultyId" class="control-label ms-2 mb-1">Факультет якому ця кафедра належить</label>
             <select asp-for="FacultyId" class="form-control">
                 <option value="">Оберіть факультет</option>
-                @{
-                    var faculties = facultyRepository.GetAll().Result;
-                    foreach (var faculty in faculties)
-                    {
-                        <option value="@faculty.Id">@faculty.Name</option>
-                    }
+                @foreach (var faculty in faculties)
+                {
+                    <option value="@faculty.Id">@faculty.Name</option>
                 }
             </select>
             <span asp-validation-for="FacultyId" class="text-danger ms-2"></span>
         </div>
         <div class="form-group">
             <input type="submit" value="Додати" class="btn btn-primary" />
+            <a asp-controller="Department" asp-action="Index" class="btn btn-secondary ms-2">Назад</a>
         </div>
     </form>
 </div>

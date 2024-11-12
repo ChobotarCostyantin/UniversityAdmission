@@ -16,18 +16,18 @@ namespace UniversityAdmission.Models.Entities
         public ObjectId Id { get; set; }
 
         [BsonElement("fullName")]
-        public string FullName { get; set; } = null!;
+        public string FullName { get; set; } = string.Empty;
 
         [BsonElement("dateOfBirth")]
         [BsonRepresentation(BsonType.DateTime)]
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime DateOfBirth { get; set; }
 
-        [BsonElement("email")]
-        public string Email { get; set; } = null!;
+        [BsonElement("phoneNumber")]
+        public string PhoneNumber { get; set; } = string.Empty;
 
         [BsonElement("address")]
-        public string Address { get; set; } = null!;
+        public string Address { get; set; } = string.Empty;
 
         [BsonElement("isBeneficiary")]
         public bool IsBeneficiary { get; set; }
@@ -36,9 +36,11 @@ namespace UniversityAdmission.Models.Entities
         public bool TransferMechanism { get; set; } = false;
 
         [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId SpecialityId { get; set; }
-        public Speciality? Speciality { get; set; }
+        [BsonElement("facultyId")]
+        public ObjectId FacultyId { get; set; }
 
-        // public List<ExamResult> ExamResults { get; set; } = new List<ExamResult>();
+        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonElement("specialityId")]
+        public ObjectId SpecialityId { get; set; }
     }
 }

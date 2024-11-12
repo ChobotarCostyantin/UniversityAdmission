@@ -18,11 +18,19 @@ namespace UniversityAdmission.Services
         public DbSet<Faculty> Faculties { get; init; }
         public DbSet<Department> Departments { get; init; }
         public DbSet<Speciality> Specialities { get; init; }
+        public DbSet<Exam> Exams { get; init; }
+        public DbSet<RequiredExam> RequiredExams { get; init; }
+        public DbSet<ExamResult> ExamResults { get; init; }
         public DbSet<Applicant> Applicants { get; init; }
+        public DbSet<Teacher> Teachers { get; init; }
+        public DbSet<Group> Groups { get; init; }
+        public DbSet<GroupTeacher> GroupTeachers { get; init; }
+        public DbSet<GroupApplicant> GroupApplicants { get; init; }
 
         public UniversityAdmissionDBContext(DbContextOptions options)
             : base(options)
         {
+            Database.AutoTransactionBehavior = AutoTransactionBehavior.Never;
         }
 
         public UniversityAdmissionDBContext()
@@ -38,7 +46,14 @@ namespace UniversityAdmission.Services
             modelBuilder.Entity<Faculty>();
             modelBuilder.Entity<Department>();
             modelBuilder.Entity<Speciality>();
+            modelBuilder.Entity<Exam>();
+            modelBuilder.Entity<RequiredExam>();
+            modelBuilder.Entity<ExamResult>();
             modelBuilder.Entity<Applicant>();
+            modelBuilder.Entity<Teacher>();
+            modelBuilder.Entity<Group>();
+            modelBuilder.Entity<GroupTeacher>();
+            modelBuilder.Entity<GroupApplicant>();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

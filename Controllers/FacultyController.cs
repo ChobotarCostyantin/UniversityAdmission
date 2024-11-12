@@ -23,31 +23,31 @@ namespace UniversityAdmission.Controllers
         }
 
         public async Task<IActionResult> Index(string searchString, string sortOrder)
-    {
-        ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-        ViewData["DescriptionSortParam"] = sortOrder == "description" ? "description_desc" : "description";
-        ViewData["CurrentFilter"] = searchString;
-
-        var faculties = await _facultyrepository.GetAll();
-
-        if (!string.IsNullOrEmpty(searchString))
         {
-            faculties = faculties.Where(f => 
-                f.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) || 
-                f.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-                .ToList();
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DescriptionSortParam"] = sortOrder == "description" ? "description_desc" : "description";
+            ViewData["CurrentFilter"] = searchString;
+
+            var faculties = await _facultyrepository.GetAll();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                faculties = faculties.Where(f =>
+                    f.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                    f.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            faculties = sortOrder switch
+            {
+                "name_desc" => faculties.OrderByDescending(f => f.Name).ToList(),
+                "description" => faculties.OrderBy(f => f.Description).ToList(),
+                "description_desc" => faculties.OrderByDescending(f => f.Description).ToList(),
+                _ => faculties.OrderBy(f => f.Name).ToList()
+            };
+
+            return View(faculties);
         }
-
-        faculties = sortOrder switch
-        {
-            "name_desc" => faculties.OrderByDescending(f => f.Name).ToList(),
-            "description" => faculties.OrderBy(f => f.Description).ToList(),
-            "description_desc" => faculties.OrderByDescending(f => f.Description).ToList(),
-            _ => faculties.OrderBy(f => f.Name).ToList()
-        };
-
-        return View(faculties);
-    }
 
         [HttpGet]
         public IActionResult Add()

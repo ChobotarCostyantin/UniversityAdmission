@@ -15,6 +15,9 @@ namespace UniversityAdmission.Services
             services.AddScoped<UserService>();
             services.AddScoped<FacultyRepository>();
             services.AddScoped<DepartmentRepository>();
+            services.AddScoped<SpecialityRepository>();
+            services.AddScoped<RequiredExamRepository>();
+            services.AddScoped<ExamRepository>();
 
             services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
         }

@@ -84,7 +84,6 @@ namespace UniversityAdmission.Data
                 Name = "Computer Science",
                 Description = "Department description",
                 FacultyId = faculty1.Id,
-                Faculty = faculty1
             };
             context.Departments.Add(department);
             context.SaveChanges();
@@ -94,9 +93,65 @@ namespace UniversityAdmission.Data
                 Name = "Arts",
                 Description = "Department description",
                 FacultyId = faculty2.Id,
-                Faculty = faculty2
             };
             context.Departments.Add(department2);
+            context.SaveChanges();
+
+            // Add specialities
+            var speciality1 = new Speciality
+            {
+                Name = "Programming",
+                Description = "Speciality description",
+                DepartmentId = department.Id,
+            };
+            context.Specialities.Add(speciality1);
+            context.SaveChanges();
+
+            var speciality2 = new Speciality
+            {
+                Name = "Art",
+                Description = "Speciality description",
+                DepartmentId = department2.Id,
+            };
+            context.Specialities.Add(speciality2);
+            context.SaveChanges();
+
+            // Add exams
+            var exam1 = new Exam
+            {
+                Name = "Math Exam",
+                Subject = "Math",
+                MinScore = 65,
+                IsCreativeContest = false
+            };
+            context.Exams.Add(exam1);
+            context.SaveChanges();
+
+            var exam2 = new Exam
+            {
+                Name = "Creative Contest Exam",
+                Subject = "Creative Contest",
+                MinScore = 50,
+                IsCreativeContest = true
+            };
+            context.Exams.Add(exam2);
+            context.SaveChanges();
+
+            // Add required exams
+            var requiredExam1 = new RequiredExam
+            {
+                SpecialityId = speciality1.Id,
+                ExamId = exam1.Id
+            };
+            context.RequiredExams.Add(requiredExam1);
+            context.SaveChanges();
+
+            var requiredExam2 = new RequiredExam
+            {
+                SpecialityId = speciality1.Id,
+                ExamId = exam2.Id
+            };
+            context.RequiredExams.Add(requiredExam2);
             context.SaveChanges();
         }
     }

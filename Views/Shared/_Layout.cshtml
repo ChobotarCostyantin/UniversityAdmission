@@ -1,10 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using UniversityAdmission.Services
+@inject UserService userService
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - UniversityAdmission</title>
+    <title>@ViewData["Title"] - Приймальна комісія</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -15,9 +18,10 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand ms-4" asp-area="" asp-controller="Home" asp-action="Index">UniversityAdmission</a>
+                <a class="navbar-brand ms-4" asp-area="" asp-controller="Home" asp-action="Index">Приймальна комісія</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    using UniversityAdmission.Data.Repos; aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -26,19 +30,28 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home"
                                 asp-action="Index">Головна</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
-                                asp-action="Privacy">Приватність</a>
-                        </li>
-                        
+                        @if (userService.IsSignedIn(Context.Request.Cookies["access-cookie"]!))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home"
+                                    asp-action="Privacy">Приватність</a>
+                            </li>
+                        }
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark"  id="navbarDropdown" role="button"
+                            <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Каталог
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Faculty" asp-action="Index">Факультети</a></li>
-                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Department" asp-action="Index">Кафедри</a></li>
+                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Faculty"
+                                        asp-action="Index">Факультети</a></li>
+                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Department"
+                                        asp-action="Index">Кафедри</a></li>
+                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Speciality"
+                                        asp-action="Index">Спеціальності</a></li>
+                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Exam"
+                                        asp-action="Index">Екзамени</a></li>
+
                             </ul>
                         </li>
                     </ul>
@@ -55,8 +68,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - UniversityAdmission - <a asp-area="" asp-controller="Home"
-                asp-action="Privacy">Приватність</a>
+            &copy; 2024 - Приймальна комісія
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
