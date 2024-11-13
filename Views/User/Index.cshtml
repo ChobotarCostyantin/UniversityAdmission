@@ -1,0 +1,73 @@
+@using UniversityAdmission.Models.Entities
+@using UniversityAdmission.Data.Repos
+@inject UserRepository userRepository
+@model List<User>
+@{
+    ViewData["Title"] = "Користувачі";
+    var currentUser = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
+}
+
+<div class="d-flex flex-column align-items-center w-100">
+    <h1 class="fw-bold">Список користувачів</h1>
+    <div class="w-100">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="text-start ps-4" style="width: 15%;">
+                        Ім'я користувача
+                    </th>
+                    <th scope="col" class="text-start ps-4" style="width: 15%;">
+                        Пошта
+                    </th>
+                    <th scope="col" class="text-center" style="width: 15%;">
+                        Пароль
+                    </th>
+                    <th scope="col" class="text-center" style="width: 15%;">
+                        Роль
+                    </th>
+                    <th scope="col" class="text-center" style="width: 20%;">
+                        Дії
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr class="align-middle">
+                        <td class="text-start ps-4 text-break">@user.Login</td>
+                        <td class="text-start ps-4 text-break">@user.Email</td>
+                        <td class="text-center text-nowrap">@user.Password</td>
+                        <td class="text-center text-nowrap">
+                        @switch (user.Role)
+                        {
+                            case Roles.Owner:
+                                <span>Власник</span>
+                                break;
+                            case Roles.Administrator:
+                                <span>Адміністратор</span>
+                                break;
+                            case Roles.Operator:
+                                <span>Оператор</span>
+                                break;
+                            case Roles.Default:
+                                <span>Користувач</span>
+                                break;
+                        }
+                        </td>
+                        <td class="text-center text-nowrap">
+                            <a type="button" class="btn btn-warning @(user.Role == Roles.Owner && (currentUser?.Role != Roles.Owner) ? "disabled" : "")" asp-controller="User" asp-action="Edit"
+                                asp-route-id="@user.Id">Редагувати</a>
+                            @if (currentUser != null && currentUser.Role == Roles.Owner)
+                            {
+                                <form method="post" asp-action="Delete" class="d-inline">
+                                    <input type="hidden" name="id" value="@user.Id" />
+                                    <input type="submit" class="btn btn-danger" value="Видалити" disabled="@(user.Role == Roles.Owner)" />
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

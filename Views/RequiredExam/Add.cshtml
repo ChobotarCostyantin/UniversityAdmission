@@ -15,7 +15,8 @@
 }
 
 <div>
-    <form asp-controller="RequiredExam" asp-action="Add" class="needs-validation" novalidate>
+    <h2 class="text-center"> Додати екзамен по спеціальності</h2>
+    <form asp-controller="RequiredExam" asp-action="Add" class="w-75 mx-auto d-flex flex-column" novalidate>
         <input type="hidden" value="@id" asp-for="SpecialityId" />
         <div class="mb-3">
             <label class="form-label ms-2 mb-1" asp-for="ExamId">Оберіть екзамен</label>

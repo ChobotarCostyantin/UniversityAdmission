@@ -36,7 +36,7 @@ namespace UniversityAdmission.Services
             Console.WriteLine($"Required permissions: {string.Join(", ", requirement.Permissions)}");
             Console.WriteLine($"User permissions: {string.Join(", ", userPermissions)}");
 
-            if (requirement.Permissions.All(userPermissions.Contains))
+            if (userPermissions.Intersect(requirement.Permissions).Any())
             {
                 Console.WriteLine("Access granted");
                 context.Succeed(requirement);

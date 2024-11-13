@@ -14,11 +14,13 @@ namespace UniversityAdmission.Data.Repos
     {
         private readonly UniversityAdmissionDBContext _context;
         private readonly RequiredExamRepository _requiredExamRepository;
+        private readonly ApplicantRepository _applicantRepository;
 
-        public SpecialityRepository(UniversityAdmissionDBContext context, RequiredExamRepository requiredExamRepository)
+        public SpecialityRepository(UniversityAdmissionDBContext context, RequiredExamRepository requiredExamRepository, ApplicantRepository applicantRepository)
         {
             _context = context;
             _requiredExamRepository = requiredExamRepository;
+            _applicantRepository = applicantRepository;
         }
 
         public async Task Create(SpecialityDTO dto)
@@ -36,9 +38,12 @@ namespace UniversityAdmission.Data.Repos
 
         public async Task DeleteByIdAsync(ObjectId id)
         {
-            // var applicants = _context.Applicants.Where(x => x.SpecialityId == id);
-            // _context.Applicants.RemoveRange(applicants);
-            // await _context.SaveChangesAsync();
+
+            var applicants = _context.Applicants.Where(x => x.SpecialityId == id);
+            foreach (var applicant in applicants)
+            {
+                await _applicantRepository.DeleteByIdAsync(applicant.Id);
+            }
 
             var requiredExams = await _requiredExamRepository.GetRequiredExamsFromSpeciality(id);
             foreach (var requiredExam in requiredExams)
@@ -76,22 +81,6 @@ namespace UniversityAdmission.Data.Repos
                 _context.Specialities.Update(speciality);
                 await _context.SaveChangesAsync();
             }
-
-            var applicants = _context.Applicants.Where(x => x.SpecialityId == dto.Id);
-            foreach (var applicant in applicants)
-            {
-                applicant.SpecialityId = dto.Id;
-                _context.Applicants.Update(applicant);
-            }
-            await _context.SaveChangesAsync();
-
-            var requiredExams = _context.RequiredExams.Where(x => x.SpecialityId == dto.Id);
-            foreach (var requiredExam in requiredExams)
-            {
-                requiredExam.SpecialityId = dto.Id;
-                _context.RequiredExams.Update(requiredExam);
-            }
-            await _context.SaveChangesAsync();
         }
     }
 }

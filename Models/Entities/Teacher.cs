@@ -17,8 +17,5 @@ namespace UniversityAdmission.Models.Entities
 
         [BsonElement("fullName")]
         public string FullName { get; set; } = string.Empty;
-
-        [BsonElement("speciality")]
-        public string Speciality { get; set; } = string.Empty;
     }
 }

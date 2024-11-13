@@ -71,14 +71,6 @@ namespace UniversityAdmission.Data.Repos
                 _context.Departments.Update(department);
                 await _context.SaveChangesAsync();
             }
-
-            var specialities = _context.Specialities.Where(x => x.DepartmentId == dto.Id);
-            foreach (var speciality in specialities)
-            {
-                speciality.DepartmentId = dto.Id;
-                _context.Specialities.Update(speciality);
-            }
-            await _context.SaveChangesAsync();
         }
     }
 }

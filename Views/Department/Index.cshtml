@@ -51,7 +51,7 @@
     else
     {
         <div class="w-100">
-            <table class="table table-striped">
+            <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col" class="text-start ps-4" style="width: 20%;">
@@ -70,7 +70,7 @@
                                 }
                             </a>
                         </th>
-                        <th scope="col" class="text-start" style="width: 30%;">
+                        <th scope="col" class="text-start ps-4" style="width: 30%;">
                             <a asp-action="Index" asp-route-sortOrder="@ViewData["DescriptionSortParam"]"
                                 asp-route-searchString="@ViewData["CurrentFilter"]"
                                 asp-route-facultyFilter="@ViewData["CurrentFacultyFilter"]"
@@ -86,7 +86,7 @@
                                 }
                             </a>
                         </th>
-                        <th scope="col" class="text-start" style="width: 20%;">
+                        <th scope="col" class="text-start ps-4" style="width: 20%;">
                             <a asp-action="Index" asp-route-sortOrder="@ViewData["FacultySortParam"]"
                                 asp-route-searchString="@ViewData["CurrentFilter"]"
                                 asp-route-facultyFilter="@ViewData["CurrentFacultyFilter"]"
@@ -114,8 +114,8 @@
                         var faculty = ViewBag.Faculties[department.FacultyId];
                         <tr class="align-middle">
                             <td class="text-start ps-4 text-break">@department.Name</td>
-                            <td class="text-start text-break">@department.Description</td>
-                            <td class="text-start text-break">@faculty.Name</td>
+                            <td class="text-start ps-4 text-break">@department.Description</td>
+                            <td class="text-start ps-4 text-break">@faculty.Name</td>
                             @if (user != null && user.Role != Roles.Default)
                             {
                                 <td class="text-center text-nowrap">

@@ -37,7 +37,7 @@ namespace UniversityAdmission.Controllers
             {
                 exams = exams.Where(s =>
                     s.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
-                    s.Subject.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                    s.Subject.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
                     .ToList();
             }
 

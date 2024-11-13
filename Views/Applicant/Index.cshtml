@@ -1,0 +1,134 @@
+@using UniversityAdmission.Models.Entities
+@using MongoDB.Bson
+@using UniversityAdmission.Data.Repos
+@inject UserRepository userRepository
+@model List<Applicant>
+@{
+    ViewData["Title"] = "Список абітурієнтів";
+    var user = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
+}
+
+<div class="d-flex flex-column align-items-center w-100">
+    <h1 class="fw-bold">Список абітурієнтів</h1>
+    @if (user != null && user.Role != Roles.Default)
+    {
+        <a type="button" class="btn btn-primary my-3" asp-controller="Applicant" asp-action="Add">Додати абітурієнта</a>
+    }
+
+    <!-- Форма пошуку та фільтрації -->
+    <div class="w-100 mb-3">
+        <form asp-action="Index" method="get" class="d-flex gap-3">
+            <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control"
+                placeholder="Пошук за ім'ям або номером телефону..." />
+            <select name="specialityFilter" class="form-select" style="width: 40%;">
+                <option value="">Всі спеціальності</option>
+                @foreach (var speciality in ViewBag.SpecialitiesList)
+                {
+                    if (ViewData["CurrentSpecialityFilter"] != null &&
+                    (ObjectId?)ViewData["CurrentSpecialityFilter"] == speciality.Id)
+                    {
+                        <option value="@speciality.Id" selected>@speciality.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@speciality.Id">@speciality.Name</option>
+                    }
+                }
+            </select>
+            <button type="submit" class="btn btn-primary">Пошук</button>
+            @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()) ||
+            ViewData["CurrentSpecialityFilter"] != null)
+            {
+                <a asp-action="Index" class="btn btn-secondary">Очистити</a>
+            }
+        </form>
+    </div>
+
+    <!-- Таблиця абітурієнтів -->
+    @if (!Model.Any())
+    {
+        <h2 class="fw-bold">Абітурієнтів не знайдено.</h2>
+    }
+    else
+    {
+        <div class='w-100'>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="text-start ps-4" style="width: 20%;">
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                asp-route-specialityFilter="@ViewData["CurrentSpecialityFilter"]"
+                                class="text-white text-decoration-none">
+                                ПІБ
+                                @if (ViewData["NameSortParam"] as string == "name_desc")
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-sort-up"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" class="text-center" style="width: 12%;">
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["DateOfBirthSortParam"]"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                asp-route-specialityFilter="@ViewData["CurrentSpecialityFilter"]"
+                                class="text-white text-decoration-none">
+                                Дата народження
+                                @if (ViewData["DateOfBirthSortParam"] as string == "dateOfBirth_desc")
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-sort-up"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" class="text-center" style="width: 10%;">
+                            <a asp-route-searchString="@ViewData["CurrentFilter"]"
+                                asp-route-specialityFilter="@ViewData["CurrentSpecialityFilter"]"
+                                class="text-white text-decoration-none">
+                                Номер телефону
+                            </a>
+                        </th>
+                        <th scope="col" class="text-center" style="width: 20%;">Адреса</th>
+                        <th scope="col" class="text-center" style="width: 5%;">Пільговик?</th>
+                        <th scope="col" class="text-center" style="width: 20%;">Спеціальність</th>
+                        @if (user != null && user.Role != Roles.Default)
+                        {
+                            <th scope="col" class="text-center" style="width: 20%;">Дії</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var applicant in Model)
+                    {
+                        var speciality = ViewBag.Specialities[applicant.SpecialityId];
+                        <tr class="align-middle">
+                            <td class="text-start ps-4 text-break">@applicant.FullName</td>
+                            <td class="text-center text-break">@applicant.DateOfBirth.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center text-break">@applicant.PhoneNumber</td>
+                            <td class="text-center text-break">@applicant.Address</td>
+                            <td class="text-center">@(applicant.IsBeneficiary ? "Так" : "Ні")</td>
+                            <td class="text-center text-break">@speciality.Name</td>
+                            @if (user != null && user.Role != Roles.Default)
+                            {
+                                <td class="text-center text-nowrap">
+                                    <a asp-controller="Applicant" asp-action="Edit" asp-route-id="@applicant.Id"
+                                        class="btn btn-warning btn-sm">Редагувати</a>
+                                    <form asp-action="Delete" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@applicant.Id" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+                                    </form>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

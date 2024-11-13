@@ -51,16 +51,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Owner", policy => policy.AddRequirements(
-        new PermissionRequirement(Permission.Create, Permission.Read, Permission.Update, Permission.Delete)
+        new PermissionRequirement(Permission.OwnerOnly)
     ))
     .AddPolicy("Administrator", policy => policy.AddRequirements(
-        new PermissionRequirement(Permission.Create, Permission.Read, Permission.Update, Permission.Delete)
+        new PermissionRequirement(Permission.AdministratorOnly)
     ))
     .AddPolicy("Operator", policy => policy.AddRequirements(
-        new PermissionRequirement(Permission.Create, Permission.Read, Permission.Update, Permission.Delete)
+        new PermissionRequirement(Permission.OperatorOnly)
     ))
     .AddPolicy("Default", policy => policy.AddRequirements(
-        new PermissionRequirement(Permission.Read)
+        new PermissionRequirement(Permission.Default)
     ));
 
 // Service injections
@@ -75,6 +75,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseStatusCodePagesWithReExecute("/Home/StatusCodeError/","?statusCode={0}");
 
 app.UseHttpsRedirection();
 

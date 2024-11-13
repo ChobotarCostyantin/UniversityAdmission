@@ -36,10 +36,6 @@ namespace UniversityAdmission.Models.Entities
         public bool TransferMechanism { get; set; } = false;
 
         [BsonRepresentation(BsonType.ObjectId)]
-        [BsonElement("facultyId")]
-        public ObjectId FacultyId { get; set; }
-
-        [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("specialityId")]
         public ObjectId SpecialityId { get; set; }
     }

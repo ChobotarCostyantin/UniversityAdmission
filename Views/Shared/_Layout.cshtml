@@ -43,6 +43,8 @@
                                 Каталог
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Applicant"
+                                        asp-action="Index">Абітурієнти</a></li>
                                 <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Faculty"
                                         asp-action="Index">Факультети</a></li>
                                 <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Department"
@@ -60,7 +62,7 @@
             </div>
         </nav>
     </header>
-    <div class="container my-auto">
+    <div class="mx-5 px-5 my-auto">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

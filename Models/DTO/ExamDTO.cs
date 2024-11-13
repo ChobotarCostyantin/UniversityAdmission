@@ -16,9 +16,8 @@ namespace UniversityAdmission.Models.DTO
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Назва має містити від 3 до 100 символів.")]
         public required string Name { get; set; }
 
-        [Required(ErrorMessage = "Заповніть поле.")]
-        [StringLength(100, MinimumLength = 3, ErrorMessage = "Предмет має містити від 3 до 100 символів.")]
-        public required string Subject { get; set; }
+        [Required(ErrorMessage = "Виберіть предмет.")]
+        public required Subjects Subject { get; set; }
 
         [Required(ErrorMessage = "Заповніть поле.")]
         [Range(1, 100, ErrorMessage = "Мінімальний бал має бути від 1 до 100")]

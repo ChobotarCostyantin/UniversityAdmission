@@ -15,11 +15,31 @@
         </div>
         <div class="form-group">
             <label asp-for="Subject" class="control-label ms-2 mb-1">Предмет</label>
-            <input asp-for="Subject" class="form-control" />
+            <select asp-for="Subject" class="form-control">
+                <option value="">Оберіть предмет</option>
+                @foreach (var subject in Enum.GetValues(typeof(Subjects)))
+                {
+                    <option value="@subject">@subject</option>
+                }
+            </select>
             <span asp-validation-for="Subject" class="text-danger ms-2"></span>
         </div>
         <div class="form-group">
-
+            <label asp-for="MinScore" class="control-label ms-2 mb-1">Мінімальний бал для проходження</label>
+            <input type="number" min="1" max="100" asp-for="MinScore" class="form-control" />
+            <span asp-validation-for="MinScore" class="text-danger ms-2"></span>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+                <input asp-for="IsCreativeContest" type="checkbox" class="form-check-input"
+                    id="creativeContestCheckbox" />
+                <label asp-for="IsCreativeContest" class="form-check-label" for="creativeContestCheckbox">Творчиий
+                    конкурс?</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Додати" class="btn btn-primary" />
+            <a asp-controller="Exam" asp-action="Index" class="btn btn-secondary ms-2">Назад</a>
         </div>
     </form>
 </div>

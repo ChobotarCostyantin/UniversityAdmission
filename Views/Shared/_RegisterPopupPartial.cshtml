@@ -1,8 +1,13 @@
 @using UniversityAdmission.Data.Repos
 @using UniversityAdmission.Models.Entities
-@model UniversityAdmission.Models.DTO.RegisterRequest
+@using UniversityAdmission.Models.DTO
+@model RegisterRequest
 
 @inject UserRepository userRepository
+
+@{
+    var user = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
+}
 
 <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true"
     novalidate>
@@ -29,15 +34,12 @@
                         <label class="form-label" asp-for="Role">Права доступу</label>
                         <select class="form-select" asp-for="Role">
                             <option value="">Оберіть права доступу</option>
-                            @{
-                                var user = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
-                                if (user != null && user.Role == Roles.Owner)
-                                {
-                                    <option value="@Roles.Administrator">Адміністратор</option>
-                                }
-                                <option value="@Roles.Operator">Оператор</option>
-                                <option value="@Roles.Default">Користувач</option>
+                            @if (user != null && user.Role == Roles.Owner)
+                            {
+                                <option value="@Roles.Administrator">Адміністратор</option>
                             }
+                            <option value="@Roles.Operator">Оператор</option>
+                            <option value="@Roles.Default">Користувач</option>
                         </select>
                         <span asp-validation-for="Role" class="text-danger"></span>
                     </div>

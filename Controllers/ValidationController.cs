@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 using UniversityAdmission.Data.Repos;
 
 namespace UniversityAdmission.Controllers
@@ -40,6 +41,11 @@ namespace UniversityAdmission.Controllers
         public IActionResult ValidatePassword(string login, string password)
         {
             return Json(_userRepository.IsPasswordCorrect(login, password));
+        }
+
+        public async Task<IActionResult> ValidateEmailExceptUser(string email, ObjectId userId)
+        {
+            return Json(await _userRepository.IsEmailTakenExceptUser(email, userId));
         }
     }
 }

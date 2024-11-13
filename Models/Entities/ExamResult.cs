@@ -24,7 +24,7 @@ namespace UniversityAdmission.Models.Entities
         public ObjectId ExamId { get; set; }
 
         [BsonElement("score")]
-        public double Score { get; set; }
+        public uint Score { get; set; }
 
         [BsonElement("status")]
         public bool Status { get; set; }

@@ -28,6 +28,7 @@ namespace UniversityAdmission.Data.Repos
                 Id = dto.Id,
                 Name = dto.Name,
                 Subject = dto.Subject,
+                MinScore = dto.MinScore,
                 IsCreativeContest = dto.IsCreativeContest,
             };
             _context.Exams.Add(exam);
@@ -67,19 +68,12 @@ namespace UniversityAdmission.Data.Repos
             {
                 exam.Name = dto.Name;
                 exam.Subject = dto.Subject;
+                exam.MinScore = dto.MinScore;
                 exam.IsCreativeContest = dto.IsCreativeContest;
 
                 _context.Exams.Update(exam);
                 await _context.SaveChangesAsync();
             }
-
-            var requiredExams = _context.RequiredExams.Where(x => x.ExamId == dto.Id);
-            foreach (var requiredExam in requiredExams)
-            {
-                requiredExam.ExamId = dto.Id;
-                _context.RequiredExams.Update(requiredExam);
-            }
-            await _context.SaveChangesAsync();
         }
     }
 }

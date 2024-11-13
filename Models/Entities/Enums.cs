@@ -10,9 +10,23 @@ namespace UniversityAdmission.Models.Entities
 
     public enum Permission
     {
-        Create,
-        Read,
-        Update,
-        Delete
+        OwnerOnly,
+        AdministratorOnly,
+        OperatorOnly,
+        Default
+    }
+
+    public enum Subjects
+    {
+        Математика,
+        Інформатика,
+        Фізика,
+        Хімія,
+        Географія,
+        Біологія,
+        Українська,
+        Іноземна,
+        Історія,
+        Література
     }
 }

@@ -26,13 +26,13 @@
     else
     {
         <div class="w-100">
-            <table class="table table-striped">
+            <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col" class="text-start ps-4">
                             Назва
                         </th>
-                        <th scope="col" class="text-start">Предмет</th>
+                        <th scope="col" class="text-start ps-4">Предмет</th>
                         <th scope="col" class="text-center" style="width: 20%;">
                             Мінімальний бал
                         </th>
@@ -48,7 +48,7 @@
                     {
                         <tr class="align-middle">
                             <td class="text-start ps-4 text-break">@requiredExam.Exam!.Name</td>
-                            <td class="text-start text-break">@requiredExam.Exam.Subject</td>
+                            <td class="text-start ps-4 text-break">@requiredExam.Exam.Subject</td>
                             <td class="text-center text-break">@requiredExam.Exam.MinScore балів</td>
                             <td class="text-center">@(requiredExam.Exam.IsCreativeContest ? "Так" : "Ні")</td>
                             @if (user != null && user.Role != Roles.Default)

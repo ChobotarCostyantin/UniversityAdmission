@@ -19,7 +19,7 @@ namespace UniversityAdmission.Models.Entities
         public string Name { get; set; } = string.Empty;
 
         [BsonElement("subject")]
-        public string Subject { get; set; } = string.Empty;
+        public Subjects Subject { get; set; }
 
         [BsonElement("minScore")]
         public uint MinScore { get; set; } //to pass

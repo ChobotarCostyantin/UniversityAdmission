@@ -120,7 +120,7 @@ namespace UniversityAdmission.Data
             var exam1 = new Exam
             {
                 Name = "Math Exam",
-                Subject = "Math",
+                Subject = Subjects.Математика,
                 MinScore = 65,
                 IsCreativeContest = false
             };
@@ -130,7 +130,7 @@ namespace UniversityAdmission.Data
             var exam2 = new Exam
             {
                 Name = "Creative Contest Exam",
-                Subject = "Creative Contest",
+                Subject = Subjects.Інформатика,
                 MinScore = 50,
                 IsCreativeContest = true
             };
@@ -152,6 +152,31 @@ namespace UniversityAdmission.Data
                 ExamId = exam2.Id
             };
             context.RequiredExams.Add(requiredExam2);
+            context.SaveChanges();
+
+            // Add applicants
+            var applicant1 = new Applicant
+            {
+                FullName = "Ivanov Ivan Ivanovich",
+                DateOfBirth = new DateTime(1990, 5, 23).AddHours(12),
+                PhoneNumber = "+380501234567",
+                Address = "address",
+                IsBeneficiary = true,
+                SpecialityId = speciality1.Id
+            };
+            context.Applicants.Add(applicant1);
+            context.SaveChanges();
+
+            var applicant2 = new Applicant
+            {
+                FullName = "Petrov Petr Petrovich",
+                DateOfBirth = new DateTime(1990, 1, 1).AddHours(12),
+                PhoneNumber = "+380501234567",
+                Address = "address",
+                IsBeneficiary = false,
+                SpecialityId = speciality2.Id
+            };
+            context.Applicants.Add(applicant2);
             context.SaveChanges();
         }
     }

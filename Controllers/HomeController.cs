@@ -12,14 +12,10 @@ namespace UniversityAdmission.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly UserRepository _userRepository;
     private readonly UserService _userService;
 
-    public HomeController(ILogger<HomeController> logger, UserRepository userRepository, UserService userService)
+    public HomeController(UserService userService)
     {
-        _logger = logger;
-        _userRepository = userRepository;
         _userService = userService;
     }
 
@@ -56,6 +52,11 @@ public class HomeController : Controller
         var token = await _userService.Login(request.Login, request.Password);
         Response.Cookies.Append("access-cookie", token);
         return RedirectToAction("Index");
+    }
+
+    public IActionResult StatusCodeError(int statusCode)
+    {
+        return View(statusCode);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

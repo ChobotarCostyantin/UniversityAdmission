@@ -9,21 +9,20 @@ using UniversityAdmission.Models.Entities;
 
 namespace UniversityAdmission.Models.DTO
 {
-    public class RegisterRequest
+    public class EditRequest
     {
         public ObjectId Id { get; set; }
         
         [Required(ErrorMessage = "Заповніть поле.")]
         [StringLength(20, ErrorMessage = "Логін повинен містити не більше 20 символів.")]
-        [Remote("ValidateLogin", "Validation", ErrorMessage = "Такий логін вже зареєстрований.")]
-        public string Login { get; set; } = string.Empty;
+        public required string Login { get; set; }
 
         [Required(ErrorMessage = "Заповніть поле.") ]
         [EmailAddress(ErrorMessage = "Некоректна адреса електронної пошти.")]
         [StringLength(50, ErrorMessage = "Адреса електронної пошти повинна містити не більше 50 символів.")]
         [DataType(DataType.EmailAddress)]
-        [Remote("ValidateEmail", "Validation", ErrorMessage = "Така адреса електронної пошти вже зареєстрована.")]
-        public string Email { get; set; } = string.Empty;
+        [Remote(action: "ValidateEmailExceptUser", controller: "Validation", ErrorMessage = "Така адреса електронної пошти вже зареєстрована.")]
+        public required string Email { get; set; }
         
         [Required(ErrorMessage = "Виберіть роль.")]
         [EnumDataType(typeof(Roles), ErrorMessage = "Некоректна роль.")]
@@ -31,11 +30,6 @@ namespace UniversityAdmission.Models.DTO
 
         [Required(ErrorMessage = "Заповніть поле.")]
         [DataType(DataType.Password)]
-        public string Password { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Заповніть поле.") ]
-        [DataType(DataType.Password)]
-        [Compare(nameof(Password), ErrorMessage = "Паролі не співпадають." )]
-        public string ConfirmPassword { get; set; } = string.Empty;
+        public required string Password { get; set; }
     }
 }

@@ -35,7 +35,7 @@
     else
     {
         <div class="w-100">
-            <table class="table table-striped">
+            <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col" class="text-start ps-4" style="width: 35%;">
@@ -52,7 +52,7 @@
                                 }
                             </a>
                         </th>
-                        <th scope="col" class="text-start" style="width: 20%;">
+                        <th scope="col" class="text-start ps-4" style="width: 20%;">
                             <a asp-action="Index" asp-route-sortOrder="@ViewData["SubjectSortParam"]"
                                 asp-route-searchString="@ViewData["CurrentFilter"]" class="text-white text-decoration-none">
                                 Предмет
@@ -94,7 +94,7 @@
                     {
                         <tr class="align-middle">
                             <td class="text-start ps-4 text-break">@exam.Name</td>
-                            <td class="text-start text-break">@exam.Subject</td>
+                            <td class="text-start ps-4 text-break">@exam.Subject</td>
                             <td class="text-center text-break">@exam.MinScore балів</td>
                             <td class="text-center">@(exam.IsCreativeContest ? "Так" : "Ні")</td>
                             @if (user != null && user.Role != Roles.Default)
