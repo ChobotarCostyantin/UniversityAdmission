@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.EntityFrameworkCore;
 
 namespace UniversityAdmission.Models.Entities
 {
+    [Collection("teacherExams")]
     public class TeacherExam
     {
         [BsonId]
@@ -20,5 +22,8 @@ namespace UniversityAdmission.Models.Entities
         [BsonElement("examId")]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId ExamId { get; set; }
+
+        [BsonIgnore]
+        public Exam? Exam { get; set; }
     }
 }

@@ -13,19 +13,15 @@ namespace UniversityAdmission.Controllers;
 public class HomeController : Controller
 {
     private readonly UserService _userService;
+    private readonly UserRepository _userRepository;
 
-    public HomeController(UserService userService)
+    public HomeController(UserService userService, UserRepository userRepository)
     {
         _userService = userService;
+        _userRepository = userRepository;
     }
 
     public IActionResult Index()
-    {
-        return View();
-    }
-
-    [Authorize]
-    public IActionResult Privacy()
     {
         return View();
     }
@@ -52,6 +48,25 @@ public class HomeController : Controller
         var token = await _userService.Login(request.Login, request.Password);
         Response.Cookies.Append("access-cookie", token);
         return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public IActionResult ForgotPassword(){
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO request){
+        var user = await _userRepository.GetUserByLogin(request.Login);
+        if(user != null) {
+            request.Password = user.Password;
+            return View(request);
+        }
+        else
+        {
+            ModelState.AddModelError(string.Empty, "Користувач з таким логіном не знайдений.");
+            return View(request);
+        }
     }
 
     public IActionResult StatusCodeError(int statusCode)

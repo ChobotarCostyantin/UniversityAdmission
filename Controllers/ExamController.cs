@@ -39,7 +39,7 @@ namespace UniversityAdmission.Controllers
                     s.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
                     s.Subject.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
                     .ToList();
-            }
+            };
 
             exams = sortOrder switch
             {

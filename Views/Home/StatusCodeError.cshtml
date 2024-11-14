@@ -1,4 +1,4 @@
-@model int
+@model int?
 
 @{
     ViewData["Title"] = "Помилка!";
@@ -11,27 +11,27 @@
     {
         case 400:
             errorMessage = "Запит містить неправильні дані. Перевірте, будь ласка, і спробуйте знову.";
-            alertClass = "alert-warning";
+            alertClass = "text-warning";
             break;
         case 401:
             errorMessage = "Вам необхідно авторизуватися для доступу до цієї сторінки.";
-            alertClass = "alert-info";
+            alertClass = "text-primary";
             break;
         case 403:
             errorMessage = "У вас немає прав для доступу до цього ресурсу.";
-            alertClass = "alert-danger";
+            alertClass = "text-danger";
             break;
         case 404:
             errorMessage = "На жаль, сторінку не знайдено.";
-            alertClass = "alert-warning";
+            alertClass = "text-warning";
             break;
         case 500:
             errorMessage = "Сталася внутрішня помилка сервера. Спробуйте пізніше.";
-            alertClass = "alert-danger";
+            alertClass = "text-danger";
             break;
         default:
             errorMessage = "Виникла невідома помилка. Будь ласка, спробуйте ще раз.";
-            alertClass = "alert-secondary";
+            alertClass = "text-secondary";
             break;
     }
 }
@@ -39,7 +39,7 @@
 <div class="container d-flex align-items-center justify-content-center">
     <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%;">
         <div class="card-body text-center">
-            <h1 class="display-1 text-danger">@errorCode</h1>
+            <h1 class="display-1 @alertClass">@errorCode</h1>
             <h3 class="card-title mb-4">@errorMessage</h3>
             <hr class="my-4" />
             <a href="/" class="btn btn-primary btn-lg">На головну</a>

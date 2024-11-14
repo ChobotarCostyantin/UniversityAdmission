@@ -20,6 +20,7 @@ namespace UniversityAdmission.Models.Entities
 
         [BsonElement("dateTime")]
         [BsonRepresentation(BsonType.DateTime)]
-        public DateTime DateTime { get; set; }
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        public DateTime ExamDate { get; set; }
     }
 }

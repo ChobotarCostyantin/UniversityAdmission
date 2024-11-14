@@ -1,0 +1,113 @@
+@using UniversityAdmission.Models.Entities
+@using MongoDB.Bson
+@using UniversityAdmission.Data.Repos
+@inject UserRepository userRepository
+@model List<Teacher>
+@{
+    ViewData["Title"] = "Список викладачів";
+    var user = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
+}
+
+<div class="d-flex flex-column align-items-center w-100">
+    <h1 class="fw-bold">Список викладачів</h1>
+    @if (user != null && user.Role != Roles.Default)
+    {
+        <a type="button" class="btn btn-primary my-3" asp-controller="Teacher" asp-action="Add">Додати викладача</a>
+    }
+
+    <!-- Форма пошуку -->
+    <div class="w-100 mb-3">
+        <form asp-action="Index" method="get" class="d-flex gap-2">
+            <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control"
+                placeholder="Пошук за ім'ям або номером телефону..." />
+            <button type="submit" class="btn btn-primary">Пошук</button>
+            @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+            {
+                <a asp-action="Index" class="btn btn-secondary">Очистити</a>
+            }
+        </form>
+    </div>
+
+    <!-- Таблиця викладачів -->
+    @if (!Model.Any())
+    {
+        <h2 class="fw-bold">Викладачів не знайдено.</h2>
+    }
+    else
+    {
+        <div class='w-100'>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="text-start ps-4">
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                class="text-white text-decoration-none">
+                                ПІБ викладача
+                                @if (ViewData["NameSortParam"] as string == "name_desc")
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-sort-up"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" class="text-center" style="width: 15%;">
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["DateOfBirthSortParam"]"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                class="text-white text-decoration-none">
+                                Дата народження
+                                @if (ViewData["DateOfBirthSortParam"] as string == "dateOfBirth_desc")
+                                {
+                                    <i class="bi bi-sort-down"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-sort-up"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" class="text-center" style="width: 10%;">
+                            <a asp-route-searchString="@ViewData["CurrentFilter"]"
+                                class="text-white text-decoration-none">
+                                Номер телефону
+                            </a>
+                        </th>
+                        <th scope="col" class="text-center" style="width: 15%;">Екзамени</th>
+                        @if (user != null && user.Role != Roles.Default)
+                        {
+                            <th scope="col" class="text-center" style="width: 15%;">Дії</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var teacher in Model)
+                    {
+                        <tr class="align-middle">
+                            <td class="text-start text-break ps-4">@teacher.FullName</td>
+                            <td class="text-center text-break">@teacher.DateOfBirth.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center text-break">@teacher.PhoneNumber</td>
+                            <td class="text-center text-nowrap">
+                                <a type="button" class="btn btn-primary" asp-route-teacherId="@teacher.Id"
+                                    asp-controller="TeacherExam" asp-action="Index">Перегляд екзаменів</a>
+                            </td>
+                            @if (user != null && user.Role != Roles.Default)
+                            {
+                                <td class="text-center text-nowrap">
+                                    <a asp-controller="Teacher" asp-action="Edit" asp-route-id="@teacher.Id"
+                                        class="btn btn-warning btn-sm">Редагувати</a>
+                                    <form asp-action="Delete" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@teacher.Id" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+                                    </form>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

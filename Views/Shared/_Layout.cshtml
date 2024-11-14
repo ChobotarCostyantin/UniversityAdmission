@@ -30,13 +30,6 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home"
                                 asp-action="Index">Головна</a>
                         </li>
-                        @if (userService.IsSignedIn(Context.Request.Cookies["access-cookie"]!))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home"
-                                    asp-action="Privacy">Приватність</a>
-                            </li>
-                        }
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -45,6 +38,8 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Applicant"
                                         asp-action="Index">Абітурієнти</a></li>
+                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Teacher"
+                                        asp-action="Index">Викладачі</a></li>
                                 <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Faculty"
                                         asp-action="Index">Факультети</a></li>
                                 <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Department"
@@ -53,7 +48,8 @@
                                         asp-action="Index">Спеціальності</a></li>
                                 <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Exam"
                                         asp-action="Index">Екзамени</a></li>
-
+                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Group"
+                                        asp-action="Index">Групи</a></li>
                             </ul>
                         </li>
                     </ul>

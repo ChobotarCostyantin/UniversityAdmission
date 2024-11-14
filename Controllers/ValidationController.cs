@@ -28,13 +28,29 @@ namespace UniversityAdmission.Controllers
         [AcceptVerbs("Get", "Post")]
         public IActionResult ValidateLogin(string login)
         {
-            return Json(!_userRepository.IsLoginTaken(login));
+            if (_userRepository.IsLoginTaken(login))
+            {
+                return Json(false);
+            }
+
+            return Json(true);
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult ValidateIfLoginExists(string login)
+        {
+            return Json(_userRepository.IsLoginTaken(login));
         }
 
         [AcceptVerbs("Get", "Post")]
         public IActionResult ValidateEmail(string email)
         {
-            return Json(!_userRepository.IsEmailTaken(email));
+            if (_userRepository.IsEmailTaken(email))
+            {
+                return Json(false);
+            }
+
+            return Json(true);
         }
 
         [AcceptVerbs("Get", "Post")]
@@ -46,6 +62,16 @@ namespace UniversityAdmission.Controllers
         public async Task<IActionResult> ValidateEmailExceptUser(string email, ObjectId userId)
         {
             return Json(await _userRepository.IsEmailTakenExceptUser(email, userId));
+        }
+
+        public bool ValidateDateOfBirth(DateTime dateOfBirth)
+        {
+            return dateOfBirth < DateTime.Now.AddYears(-16) && dateOfBirth > DateTime.Now.AddYears(-80);
+        }
+
+        public bool ValidateExamDate(DateTime examDate)
+        {
+            return examDate >= DateTime.Now;
         }
     }
 }

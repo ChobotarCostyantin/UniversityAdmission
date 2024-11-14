@@ -17,5 +17,11 @@ namespace UniversityAdmission.Models.Entities
 
         [BsonElement("fullName")]
         public string FullName { get; set; } = string.Empty;
+
+        [BsonElement("dateOfBirth")]
+        public DateTime DateOfBirth { get; set; }
+
+        [BsonElement("phoneNumber")]
+        public string PhoneNumber { get; set; } = string.Empty;
     }
 }

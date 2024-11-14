@@ -2,9 +2,9 @@
 @using UniversityAdmission.Data.Repos
 @using UniversityAdmission.ViewModels
 @inject UserRepository userRepository
-@inject RequiredExamRepository requiredExamRepository
+@inject TeacherExamRepository teacherExamRepository
 
-@model SpecialityAndRequiredExamsViewModel
+@model GroupAndGroupExamsViewModel
 
 @{
     ViewData["Title"] = "Екзамени";
@@ -12,14 +12,14 @@
 }
 
 <div class="d-flex flex-column align-items-center w-100">
-    <h1 class="fw-bold">Список екзаменів для спеціальності @Model.Speciality.Name</h1>
+    <h1 class="fw-bold">Список екзаменів для групи @Model.Group.Name</h1>
     @if (user != null && user.Role != Roles.Default)
     {
-        <a type="button" class="btn btn-primary my-3" asp-route-specialityId="@Model.Speciality.Id" asp-controller="RequiredExam"
+        <a type="button" class="btn btn-primary my-3" asp-route-groupId="@Model.Group.Id" asp-controller="GroupExam"
             asp-action="Add">Додати екзамен</a>
     }
 
-    @if (!Model.RequiredExams.Any())
+    @if (!Model.GroupExams.Any())
     {
         <h2 class="fw-bold">Екзаменів не знайдено</h2>
     }
@@ -32,7 +32,7 @@
                         <th scope="col" class="text-start ps-4">
                             Назва
                         </th>
-                        <th scope="col" class="text-start ps-4">Предмет</th>
+                        <th scope="col" class="text-center">Предмет</th>
                         <th scope="col" class="text-center" style="width: 20%;">
                             Мінімальний бал
                         </th>
@@ -44,19 +44,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var requiredExam in Model.RequiredExams)
+                    @foreach (var groupExam in Model.GroupExams)
                     {
                         <tr class="align-middle">
-                            <td class="text-start ps-4 text-break">@requiredExam.Exam!.Name</td>
-                            <td class="text-start ps-4 text-break">@requiredExam.Exam.Subject</td>
-                            <td class="text-center text-break">@requiredExam.Exam.MinScore балів</td>
-                            <td class="text-center">@(requiredExam.Exam.IsCreativeContest ? "Так" : "Ні")</td>
+                            <td class="text-start ps-4 text-break">@groupExam.Exam!.Name</td>
+                            <td class="text-center text-break">@groupExam.Exam.Subject</td>
+                            <td class="text-center text-break">@groupExam.Exam.MinScore балів</td>
+                            <td class="text-center">@(groupExam.Exam.IsCreativeContest ? "Так" : "Ні")</td>
                             @if (user != null && user.Role != Roles.Default)
                             {
                                 <td class="text-center text-nowrap">
-                                    <form method="post" asp-action="Delete" asp-route-specialityId="@Model.Speciality.Id"
-                                        asp-route-requiredExamId="@requiredExam.Id" class="d-inline">
-                                        <input type="hidden" name="id" value="@requiredExam.Id" />
+                                    <form method="post" asp-action="Delete" asp-route-groupId="@Model.Group.Id"
+                                        asp-route-groupExamId="@groupExam.Id" class="d-inline">
+                                        <input type="hidden" name="id" value="@groupExam.Id" />
                                         <input type="submit" class="btn btn-danger" value="Видалити" />
                                     </form>
                                 </td>

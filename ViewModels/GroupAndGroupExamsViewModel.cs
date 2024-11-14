@@ -6,9 +6,9 @@ using UniversityAdmission.Models.Entities;
 
 namespace UniversityAdmission.ViewModels
 {
-    public class SpecialityAndRequiredExamsViewModel
+    public class GroupAndGroupExamsViewModel
     {
-        public Speciality Speciality { get; set; } = null!;
-        public List<RequiredExam> RequiredExams { get; set; } = new();
+        public Group Group { get; set; } = null!;
+        public List<GroupExam> GroupExams { get; set; } = new();
     }
 }

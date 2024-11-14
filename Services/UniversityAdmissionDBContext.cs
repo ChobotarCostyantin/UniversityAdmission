@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using MongoDB.Bson;
 using MongoDB.EntityFrameworkCore;
 using MongoDB.EntityFrameworkCore.Extensions;
@@ -23,7 +24,9 @@ namespace UniversityAdmission.Services
         public DbSet<ExamResult> ExamResults { get; init; }
         public DbSet<Applicant> Applicants { get; init; }
         public DbSet<Teacher> Teachers { get; init; }
+        public DbSet<TeacherExam> TeacherExams { get; init; }
         public DbSet<Group> Groups { get; init; }
+        public DbSet<GroupExam> GroupExams { get; init; }
         public DbSet<GroupTeacher> GroupTeachers { get; init; }
         public DbSet<GroupApplicant> GroupApplicants { get; init; }
 
@@ -51,7 +54,9 @@ namespace UniversityAdmission.Services
             modelBuilder.Entity<ExamResult>();
             modelBuilder.Entity<Applicant>();
             modelBuilder.Entity<Teacher>();
+            modelBuilder.Entity<TeacherExam>();
             modelBuilder.Entity<Group>();
+            modelBuilder.Entity<GroupExam>();
             modelBuilder.Entity<GroupTeacher>();
             modelBuilder.Entity<GroupApplicant>();
         }

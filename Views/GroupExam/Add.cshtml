@@ -2,29 +2,29 @@
 @using UniversityAdmission.Data.Repos
 @using UniversityAdmission.Models.Entities
 @using UniversityAdmission.Models.DTO
-@model RequiredExamDTO
+@model GroupExamDTO
 
 @inject ExamRepository examRepository
-@inject RequiredExamRepository requiredExamRepository
+@inject GroupExamRepository groupExamRepository
 
 @{
     ViewData["Title"] = "Додати екзамен";
     var exams = examRepository.GetAll().Result;
-    var specialityId = ViewContext.RouteData.Values["specialityId"];
-    var requiredExams = requiredExamRepository.GetRequiredExamsFromSpeciality(ObjectId.Parse(specialityId!.ToString())).Result;
+    var groupId = ViewContext.RouteData.Values["groupId"];
+    var groupExams = groupExamRepository.GetGroupExamsFromGroup(ObjectId.Parse(groupId!.ToString())).Result;
 }
 
 <div>
-    <h2 class="text-center">Додати екзамен по спеціальності</h2>
-    <form asp-controller="RequiredExam" asp-action="Add" class="w-75 mx-auto d-flex flex-column" novalidate>
-        <input type="hidden" value="@specialityId" asp-for="SpecialityId" />
+    <h2 class="text-center">Додати екзамен для викладача</h2>
+    <form asp-controller="GroupExam" asp-action="Add" class="w-75 mx-auto d-flex flex-column" novalidate>
+        <input type="hidden" value="@groupId" asp-for="GroupId" />
         <div class="mb-3">
             <label class="form-label ms-2 mb-1" asp-for="ExamId">Оберіть екзамен</label>
             <select asp-for="ExamId" class="form-control">
                 <option value="">Оберіть екзамен</option>
                 @foreach (var exam in exams)
                 {
-                    if (!requiredExams.Any(re => re.ExamId == exam.Id))
+                    if (!groupExams.Any(te => te.ExamId == exam.Id))
                     {
                         <option value="@exam.Id">@exam.Name</option>
                     }
@@ -33,7 +33,7 @@
         </div>
         <div class="mb-3">
             <input type="submit" value="Додати" class="btn btn-primary" />
-            <a asp-controller="RequiredExam" asp-route-specialityId="@specialityId" asp-action="Index" class="btn btn-secondary ms-2">Назад</a>
+            <a asp-controller="GroupExam" asp-route-groupId="@groupId" asp-action="Index" class="btn btn-secondary ms-2">Назад</a>
         </div>
     </form>
 </div>

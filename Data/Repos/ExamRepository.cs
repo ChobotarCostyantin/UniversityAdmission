@@ -14,11 +14,13 @@ namespace UniversityAdmission.Data.Repos
     {
         private readonly UniversityAdmissionDBContext _context;
         private readonly RequiredExamRepository _requiredExamRepository;
+        private readonly TeacherExamRepository _teacherExamRepository;
 
-        public ExamRepository(UniversityAdmissionDBContext context, RequiredExamRepository requiredExamRepository)
+        public ExamRepository(UniversityAdmissionDBContext context, RequiredExamRepository requiredExamRepository, TeacherExamRepository teacherExamRepository)
         {
             _context = context;
             _requiredExamRepository = requiredExamRepository;
+            _teacherExamRepository = teacherExamRepository;
         }
 
         public async Task Create(ExamDTO dto)
@@ -37,6 +39,12 @@ namespace UniversityAdmission.Data.Repos
 
         public async Task DeleteByIdAsync(ObjectId id)
         {
+            var teacherExams = _context.TeacherExams.Where(x => x.ExamId == id);
+            foreach (var teacherExam in teacherExams)
+            {
+                await _teacherExamRepository.DeleteByIdAsync(teacherExam.Id);
+            }
+
             var requiredExams = _context.RequiredExams.Where(x => x.ExamId == id);
             foreach (var requiredExam in requiredExams)
             {

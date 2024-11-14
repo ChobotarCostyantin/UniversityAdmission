@@ -113,10 +113,5 @@ namespace UniversityAdmission.Controllers
             await _applicantRepository.DeleteByIdAsync(id);
             return RedirectToAction("Index");
         }
-        
-        public bool ValidateDateOfBirth(DateTime dateOfBirth)
-        {
-            return dateOfBirth < DateTime.Now.AddYears(-16) && dateOfBirth > DateTime.Now.AddYears(-80);
-        }
     }
 }

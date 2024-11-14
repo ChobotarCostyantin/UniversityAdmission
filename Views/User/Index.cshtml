@@ -55,15 +55,12 @@
                         }
                         </td>
                         <td class="text-center text-nowrap">
-                            <a type="button" class="btn btn-warning @(user.Role == Roles.Owner && (currentUser?.Role != Roles.Owner) ? "disabled" : "")" asp-controller="User" asp-action="Edit"
+                            <a type="button" class="btn btn-warning @(currentUser?.Role != Roles.Owner ? "disabled" : "")" asp-controller="User" asp-action="Edit"
                                 asp-route-id="@user.Id">Редагувати</a>
-                            @if (currentUser != null && currentUser.Role == Roles.Owner)
-                            {
-                                <form method="post" asp-action="Delete" class="d-inline">
-                                    <input type="hidden" name="id" value="@user.Id" />
-                                    <input type="submit" class="btn btn-danger" value="Видалити" disabled="@(user.Role == Roles.Owner)" />
-                                </form>
-                            }
+                            <form method="post" asp-action="Delete" class="d-inline">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <input type="submit" class="btn btn-danger" value="Видалити" disabled="@(user.Role == Roles.Owner)" />
+                            </form>
                         </td>
                     </tr>
                 }

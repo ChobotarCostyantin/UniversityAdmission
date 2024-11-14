@@ -24,6 +24,11 @@ namespace UniversityAdmission.Data.Repos
             return await _context.Users.FirstOrDefaultAsync(x => x.Login == login && x.Password == password);
         }
 
+        public async Task<User?> GetUserByLogin(string login)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Login == login);
+        }
+
         public async Task<User?> GetById(ObjectId id)
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);

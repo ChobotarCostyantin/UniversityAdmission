@@ -64,16 +64,16 @@ namespace UniversityAdmission.Data
             // Add faculties
             var faculty1 = new Faculty
             {
-                Name = "Faculty of Science",
-                Description = "Faculty description"
+                Name = "ННІФТКН",
+                Description = "Навчально-науковий інститут фізико-технічних та комп'ютерних наук"
             };
             context.Faculties.Add(faculty1);
             context.SaveChanges();
 
             var faculty2 = new Faculty
             {
-                Name = "Faculty of Arts",
-                Description = "Faculty description"
+                Name = "Факультет математики та інформатики",
+                Description = "Опис факультета"
             };
             context.Faculties.Add(faculty2);
             context.SaveChanges();
@@ -81,8 +81,8 @@ namespace UniversityAdmission.Data
             // Add departments
             var department = new Department
             {
-                Name = "Computer Science",
-                Description = "Department description",
+                Name = "Кафедра програмного забезпечення комп’ютерних систем",
+                Description = "Опис кафедри",
                 FacultyId = faculty1.Id,
             };
             context.Departments.Add(department);
@@ -90,8 +90,8 @@ namespace UniversityAdmission.Data
 
             var department2 = new Department
             {
-                Name = "Arts",
-                Description = "Department description",
+                Name = "Кафедра математичного аналізу",
+                Description = "Опис кафедри",
                 FacultyId = faculty2.Id,
             };
             context.Departments.Add(department2);
@@ -100,8 +100,8 @@ namespace UniversityAdmission.Data
             // Add specialities
             var speciality1 = new Speciality
             {
-                Name = "Programming",
-                Description = "Speciality description",
+                Name = "ІПЗ",
+                Description = "Інженерія програмного забезпечення",
                 DepartmentId = department.Id,
             };
             context.Specialities.Add(speciality1);
@@ -109,8 +109,8 @@ namespace UniversityAdmission.Data
 
             var speciality2 = new Speciality
             {
-                Name = "Art",
-                Description = "Speciality description",
+                Name = "Системний аналіз",
+                Description = "Опис спеціальності",
                 DepartmentId = department2.Id,
             };
             context.Specialities.Add(speciality2);
@@ -119,7 +119,7 @@ namespace UniversityAdmission.Data
             // Add exams
             var exam1 = new Exam
             {
-                Name = "Math Exam",
+                Name = "Математика",
                 Subject = Subjects.Математика,
                 MinScore = 65,
                 IsCreativeContest = false
@@ -129,7 +129,7 @@ namespace UniversityAdmission.Data
 
             var exam2 = new Exam
             {
-                Name = "Creative Contest Exam",
+                Name = "Інформатика",
                 Subject = Subjects.Інформатика,
                 MinScore = 50,
                 IsCreativeContest = true
@@ -157,10 +157,10 @@ namespace UniversityAdmission.Data
             // Add applicants
             var applicant1 = new Applicant
             {
-                FullName = "Ivanov Ivan Ivanovich",
-                DateOfBirth = new DateTime(1990, 5, 23).AddHours(12),
+                FullName = "Максимчук Олег Святославович",
+                DateOfBirth = new DateTime(2005, 01, 14).AddHours(12),
                 PhoneNumber = "+380501234567",
-                Address = "address",
+                Address = "Перебиківці",
                 IsBeneficiary = true,
                 SpecialityId = speciality1.Id
             };
@@ -169,14 +169,33 @@ namespace UniversityAdmission.Data
 
             var applicant2 = new Applicant
             {
-                FullName = "Petrov Petr Petrovich",
-                DateOfBirth = new DateTime(1990, 1, 1).AddHours(12),
+                FullName = "Олегчук Максим Валерійович",
+                DateOfBirth = new DateTime(2004, 6, 16).AddHours(12),
                 PhoneNumber = "+380501234567",
-                Address = "address",
+                Address = "Керевипівці",
                 IsBeneficiary = false,
                 SpecialityId = speciality2.Id
             };
             context.Applicants.Add(applicant2);
+            context.SaveChanges();
+
+            // Add teachers
+            var teacher1 = new Teacher
+            {
+                FullName = "Комісарчук Володимир Васильович",
+                DateOfBirth = new DateTime(1982, 11, 12).AddHours(12),
+                PhoneNumber = "+380501234567"
+            };
+            context.Teachers.Add(teacher1);
+            context.SaveChanges();
+
+            var teacher2 = new Teacher
+            {
+                FullName = "Валь Олександр Олександрович",
+                DateOfBirth = new DateTime(1989, 5, 23).AddHours(12),
+                PhoneNumber = "+380501234567"
+            };
+            context.Teachers.Add(teacher2);
             context.SaveChanges();
         }
     }

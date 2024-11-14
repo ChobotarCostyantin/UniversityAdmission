@@ -23,21 +23,21 @@ namespace UniversityAdmission.Controllers
             _specialityRepository = specialityRepository;
         }
 
-        [Route("Speciality/{id}/RequiredExam")]
-        public async Task<IActionResult> Index(ObjectId id)
+        [Route("Speciality/{specialityId}/RequiredExam")]
+        public async Task<IActionResult> Index(ObjectId specialityId)
         {
-            if (id == ObjectId.Empty)
+            if (specialityId == ObjectId.Empty)
             {
                 return NotFound();
             }
             
-            var selectedSpeciality = await _specialityRepository.GetById(id);
+            var selectedSpeciality = await _specialityRepository.GetById(specialityId);
             if (selectedSpeciality == null)
             {
                 return NotFound();
             }
 
-            var requiredExams = await _requiredExamRepository.GetRequiredExamsFromSpeciality(id);
+            var requiredExams = await _requiredExamRepository.GetRequiredExamsFromSpeciality(specialityId);
 
             var model = new SpecialityAndRequiredExamsViewModel
             {
@@ -49,19 +49,19 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
-        [Route("Speciality/{id}/RequiredExam/Add")]
-        public IActionResult Add(ObjectId id)
+        [Route("Speciality/{specialityId}/RequiredExam/Add")]
+        public IActionResult Add(ObjectId specialityId)
         {
-            var requiredExam = new RequiredExamDTO { SpecialityId = id };
+            var requiredExam = new RequiredExamDTO { SpecialityId = specialityId };
             return View(requiredExam);
         }
 
         [HttpPost]
-        [Route("Speciality/{id}/RequiredExam/Add")]
-        public async Task<IActionResult> Add(ObjectId id, RequiredExamDTO dto)
+        [Route("Speciality/{specialityId}/RequiredExam/Add")]
+        public async Task<IActionResult> Add(ObjectId specialityId, RequiredExamDTO dto)
         {
             await _requiredExamRepository.Create(dto);
-            return RedirectToAction("Index", new { id = id });
+            return RedirectToAction("Index", new { specialityId });
         }
 
         [HttpPost]
@@ -69,7 +69,7 @@ namespace UniversityAdmission.Controllers
         public async Task<IActionResult> Delete(ObjectId specialityId, ObjectId requiredExamId)
         {
             await _requiredExamRepository.DeleteByIdAsync(requiredExamId);
-            return RedirectToAction("Index", new { id = specialityId });
+            return RedirectToAction("Index", new { specialityId });
         }
     }
 }

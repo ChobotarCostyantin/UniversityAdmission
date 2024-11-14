@@ -20,6 +20,9 @@ namespace UniversityAdmission.Services
             services.AddScoped<ExamRepository>();
             services.AddScoped<TeacherRepository>();
             services.AddScoped<ApplicantRepository>();
+            services.AddScoped<TeacherExamRepository>();
+            services.AddScoped<GroupRepository>();
+            services.AddScoped<GroupExamRepository>();
 
             services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
         }

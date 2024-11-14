@@ -60,7 +60,16 @@ namespace UniversityAdmission.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(ObjectId id)
         {
+            var currentUser = _userRepository.GetUserByToken(Request.Cookies["access-cookie"]!);
+            
             await _userRepository.DeleteUser(id);
+
+            if (currentUser != null && currentUser.Id == id)
+            {
+                Response.Cookies.Delete("access-cookie");
+                return RedirectToAction("Index", "Home");
+            }
+
             return RedirectToAction("Index");
         }
     }

@@ -1,24 +1,24 @@
 @using UniversityAdmission.Models.Entities
 @using UniversityAdmission.Data.Repos
 @inject UserRepository userRepository
-@model List<Faculty>
+@model List<Group>
 @{
-    ViewData["Title"] = "Факультети";
+    ViewData["Title"] = "Групи";
     var user = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
 }
 
 <div class="d-flex flex-column align-items-center w-100">
-    <h1 class="fw-bold">Список факультетів</h1>
+    <h1 class="fw-bold">Список груп</h1>
     @if (user != null && user.Role != Roles.Default)
     {
-        <a type="button" class="btn btn-primary my-3" asp-controller="Faculty" asp-action="Add">Додати факультет</a>
+        <a type="button" class="btn btn-primary my-3" asp-controller="Group" asp-action="Add">Додати групу</a>
     }
 
     <!-- Форма пошуку -->
     <div class="w-100 mb-3">
         <form asp-action="Index" method="get" class="d-flex gap-2">
             <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control"
-                placeholder="Пошук за назвою або описом..." />
+                placeholder="Пошук за назвою..." />
             <button type="submit" class="btn btn-primary">Пошук</button>
             @if (!string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
             {
@@ -29,7 +29,7 @@
 
     @if (!Model.Any())
     {
-        <h2 class="fw-bold">Факультетів не знайдено</h2>
+        <h2 class="fw-bold">Груп не знайдено</h2>
     }
     else
     {
@@ -37,8 +37,8 @@
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col" class="text-start ps-4" style="width: 20%;">
-                            <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]"
+                        <th scope="col" class="text-start ps-4">
+                            <a asp-action="Index" asp-route-sortOrder="Name"
                                 asp-route-searchString="@ViewData["CurrentFilter"]"
                                 class="text-white text-decoration-none">
                                 Назва
@@ -52,11 +52,12 @@
                                 }
                             </a>
                         </th>
-                        <th scope="col" class="w-50 text-start ps-4">
-                            <a asp-action="Index" asp-route-sortOrder="@ViewData["DescriptionSortParam"]"
-                                asp-route-searchString="@ViewData["CurrentFilter"]" class="text-white text-decoration-none">
-                                Опис
-                                @if (ViewData["DescriptionSortParam"] as string == "description_desc")
+                        <th scope="col" class="text-center" style="width: 20%;">
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]"
+                                asp-route-searchString="@ViewData["CurrentFilter"]"
+                                class="text-white text-decoration-none">
+                                Дата проведення
+                                @if (ViewData["DateSortParam"] as string == "date_desc")
                                 {
                                     <i class="bi bi-sort-down"></i>
                                 }
@@ -66,6 +67,7 @@
                                 }
                             </a>
                         </th>
+                        <th scope="col" class="text-center" style="width: 25%;">Деталі</th>
                         @if (user != null && user.Role != Roles.Default)
                         {
                             <th scope="col" class="text-center" style="width: 20%;">Дії</th>
@@ -73,18 +75,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var faculty in Model)
+                    @foreach (var group in Model)
                     {
                         <tr class="align-middle">
-                            <td class="text-start ps-4 text-break">@faculty.Name</td>
-                            <td class="text-start ps-4 text-break">@faculty.Description</td>
+                            <td class="text-start ps-4">@group.Name</td>
+                            <td class="text-center">@group.ExamDate.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center d-flex gap-3 justify-content-center">
+                                <a type="button" class="btn btn-primary">Абітурієнти</a>
+                                <a type="button" class="btn btn-primary">Викладачі</a>
+                                <a type="button" class="btn btn-primary" asp-controller="GroupExam" asp-action="Index"
+                                    asp-route-groupId="@group.Id">Екзамени</a>
+                            </td>
                             @if (user != null && user.Role != Roles.Default)
                             {
-                                <td class="text-center text-nowrap">
-                                    <a type="button" class="btn btn-warning" asp-controller="Faculty" asp-action="Edit"
-                                        asp-route-id="@faculty.Id">Редагувати</a>
+                                <td class="text-center">
+                                    <a type="button" class="btn btn-warning" asp-controller="Group" asp-action="Edit"
+                                        asp-route-id="@group.Id">Редагувати</a>
                                     <form method="post" asp-action="Delete" class="d-inline">
-                                        <input type="hidden" name="id" value="@faculty.Id" />
+                                        <input type="hidden" name="id" value="@group.Id" />
                                         <input type="submit" class="btn btn-danger" value="Видалити" />
                                     </form>
                                 </td>

@@ -118,7 +118,8 @@
                             <td class="text-start ps-4 text-break">@speciality.Description</td>
                             <td class="text-start ps-4 text-break">@department.Name</td>
                             <td class="text-center text-nowrap">
-                                <a type="button" class="btn btn-primary" asp-route-id="@speciality.Id" asp-controller="RequiredExam" asp-action="Index">Перегляд екзаменів</a>
+                                <a type="button" class="btn btn-primary" asp-route-specialityId="@speciality.Id"
+                                    asp-controller="RequiredExam" asp-action="Index">Перегляд екзаменів</a>
                             </td>
                             @if (user != null && user.Role != Roles.Default)
                             {

@@ -17,9 +17,11 @@ namespace UniversityAdmission.Models.Entities
         public ObjectId Id { get; set; }
 
         [BsonElement("examId")]
+        [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId ExamId { get; set; }
 
         [BsonElement("specialityId")]
+        [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId SpecialityId { get; set; }
 
         [BsonIgnore]
