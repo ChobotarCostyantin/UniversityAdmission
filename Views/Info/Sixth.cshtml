@@ -11,7 +11,7 @@
             <form asp-action="Sixth" method="get">
                 <div class="d-flex align-items-center">
                     <p class="card-text text-nowrap m-0 me-3">Отримати інформацію про абітурієнтів, що вступають на</p>
-                    <select name="responseType" class="form-select">
+                    <select name="responseType" class="form-select" id="responseTypeSelect" onchange="this.form.submit()">
                         @foreach (var option in Model.ResponseOptions)
                         {
                             if (option.IsResponseSelected)
@@ -25,21 +25,35 @@
                         }
                     </select>
                 </div>
-                @if (Model.ResponseOptions[2].IsResponseSelected == false)
+                @if (!Model.ResponseOptions[2].IsResponseSelected)
                 {
                     <select name="objectId" class="form-select mt-3">
                         @if (Model.ResponseOptions[0].IsResponseSelected)
                         {
                             @foreach (var faculty in Model.Faculties)
                             {
-                                <option value="@faculty.Id">@faculty.Name</option>
+                                if (faculty.Id == Model.SelectedObjectId)
+                                {
+                                    <option value="@faculty.Id" selected>@faculty.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@faculty.Id">@faculty.Name</option>
+                                }
                             }
                         }
                         else if (Model.ResponseOptions[1].IsResponseSelected)
                         {
                             @foreach (var speciality in Model.Specialities)
                             {
-                                <option value="@speciality.Id">@speciality.Name</option>
+                                if (speciality.Id == Model.SelectedObjectId)
+                                {
+                                    <option value="@speciality.Id" selected>@speciality.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@speciality.Id">@speciality.Name</option>
+                                }
                             }
                         }
                     </select>
@@ -51,7 +65,7 @@
 
     @if (!Model.Applicants.Any())
     {
-        <h2 class="fw-bold">Абітурієнтів не знайдено</h2>
+        <h2 class="fw-bold">Абітурієнтів не знайдено</h2>
     }
     else
     {

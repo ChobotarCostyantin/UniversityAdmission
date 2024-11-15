@@ -12,6 +12,7 @@ namespace UniversityAdmission.Models.DTO.InfoResponces
         public List<SelectOptionSixth> ResponseOptions { get; set; } = new();
         public List<Faculty> Faculties { get; set; } = new();
         public List<Speciality> Specialities { get; set; } = new();
+        public ObjectId? SelectedObjectId { get; set; }
         public List<Applicant> Applicants { get; set; } = new();
     }
     

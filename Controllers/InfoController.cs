@@ -63,7 +63,7 @@ namespace UniversityAdmission.Controllers
                     new() { Value = "творчий конкурс", IsSelected = responseType == "творчий конкурс" }
                 ]
             };
-            
+
             switch (responseType)
             {
                 case "3 екзамени":
@@ -181,7 +181,7 @@ namespace UniversityAdmission.Controllers
                 var requiredExams = await _requiredExamRepository.GetRequiredExamsFromSpeciality(specialityId.Value);
                 var averageScores = await _examResultRepository.GetAverageScoresBySpeciality(specialityId.Value);
 
-                examAverages = requiredExams.Select(exam => 
+                examAverages = requiredExams.Select(exam =>
                 {
                     if (averageScores.TryGetValue(exam.ExamId, out double averageScore))
                     {
@@ -221,7 +221,7 @@ namespace UniversityAdmission.Controllers
 
             var response = new FifthResponce
             {
-                ResponseOptions = 
+                ResponseOptions =
                 [
                     new() { Value = "по факультету", IsSelected = responseType == "по факультету" },
                     new() { Value = "за спеціальностями", IsSelected = responseType == "за спеціальностями" },
@@ -262,7 +262,7 @@ namespace UniversityAdmission.Controllers
                     response.Result = result;
                     break;
             }
-            
+
             return View(response);
         }
 
@@ -274,19 +274,32 @@ namespace UniversityAdmission.Controllers
             var departments = await _departmentRepository.GetAll();
             var specialities = await _specialityRepository.GetAll();
 
+            // If no objectId is selected, set default based on responseType
+            if (objectId == null)
+            {
+                if (responseType == "заданий факультет" && faculties.Any())
+                {
+                    objectId = faculties.First().Id;
+                }
+                else if (responseType == "задану спеціальність" && specialities.Any())
+                {
+                    objectId = specialities.First().Id;
+                }
+            }
+
             var response = new SixthResponse
             {
-                ResponseOptions = 
+                ResponseOptions =
                 [
                     new() { Value = "заданий факультет", IsResponseSelected = responseType == "заданий факультет" },
                     new() { Value = "задану спеціальність", IsResponseSelected = responseType == "задану спеціальність" },
                     new() { Value = "абітурієнти-пільговики", IsResponseSelected = responseType == "абітурієнти-пільговики" }
                 ],
-
                 Faculties = faculties,
-                Specialities = specialities
+                Specialities = specialities,
+                SelectedObjectId = objectId
             };
-            
+
             var result = new List<Applicant>();
             switch (responseType)
             {
@@ -325,7 +338,6 @@ namespace UniversityAdmission.Controllers
                     response.Applicants = result;
                     break;
             }
-
             return View(response);
         }
 
@@ -337,7 +349,7 @@ namespace UniversityAdmission.Controllers
 
             var response = new SeventhResponse
             {
-                ResponseOptions = 
+                ResponseOptions =
                 [
                     new() { Value = "загальна кількість", IsSelected = responseType == "загальна кількість" },
                     new() { Value = "кількість де у спеціальностей співпадають вступні іспити", IsSelected = responseType == "кількість де у спеціальностей співпадають вступні іспити" }
@@ -382,7 +394,7 @@ namespace UniversityAdmission.Controllers
 
             var response = new EighthResponse
             {
-                ResponseOptions = 
+                ResponseOptions =
                 [
                     new() { Value = "провалили вступні іспити", IsSelected = responseType == "провалили вступні іспити" },
                     new() { Value = "провалили один предмет", IsSelected = responseType == "провалили один предмет" },
@@ -413,7 +425,7 @@ namespace UniversityAdmission.Controllers
                         {
                             result.Add(applicant);
                         }
-                    }    
+                    }
                     response.Applicants = result;
                     break;
                 case "провалили два предмета":
@@ -424,7 +436,7 @@ namespace UniversityAdmission.Controllers
                         {
                             result.Add(applicant);
                         }
-                    }    
+                    }
                     response.Applicants = result;
                     break;
                 case "провалили творчий конкурс":
