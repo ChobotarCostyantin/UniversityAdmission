@@ -13,6 +13,7 @@ using UniversityAdmission.Models.Entities;
 
 namespace UniversityAdmission.Controllers
 {
+    [Authorize]
     public class FacultyController : Controller
     {
         private readonly FacultyRepository _facultyrepository;
@@ -50,12 +51,14 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         public IActionResult Add()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Add(FacultyDTO dto)
         {
             await _facultyrepository.Create(dto);
@@ -63,6 +66,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Edit(ObjectId id)
         {
             if (id == ObjectId.Empty)
@@ -87,6 +91,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Edit(FacultyDTO dto)
         {
             await _facultyrepository.Update(dto);
@@ -94,6 +99,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Delete(ObjectId id)
         {
             await _facultyrepository.DeleteByIdAsync(id);

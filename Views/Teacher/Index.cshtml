@@ -39,7 +39,7 @@
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col" class="text-start ps-4">
+                        <th scope="col" class="text-center">
                             <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]"
                                 asp-route-searchString="@ViewData["CurrentFilter"]"
                                 class="text-white text-decoration-none">
@@ -75,6 +75,7 @@
                                 Номер телефону
                             </a>
                         </th>
+                        <th scope="col" class="text-center" style="width: 15%;">Предмет</th>
                         <th scope="col" class="text-center" style="width: 15%;">Екзамени</th>
                         @if (user != null && user.Role != Roles.Default)
                         {
@@ -89,6 +90,7 @@
                             <td class="text-start text-break ps-4">@teacher.FullName</td>
                             <td class="text-center text-break">@teacher.DateOfBirth.ToString("dd.MM.yyyy")</td>
                             <td class="text-center text-break">@teacher.PhoneNumber</td>
+                            <td class="text-center text-break">@teacher.Subject</td>
                             <td class="text-center text-nowrap">
                                 <a type="button" class="btn btn-primary btn-sm" asp-route-teacherId="@teacher.Id"
                                     asp-controller="TeacherExam" asp-action="Index">Перегляд екзаменів</a>

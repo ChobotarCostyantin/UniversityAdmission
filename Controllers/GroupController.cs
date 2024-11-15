@@ -12,6 +12,7 @@ using UniversityAdmission.Models.DTO;
 
 namespace UniversityAdmission.Controllers
 {
+    [Authorize]
     public class GroupController : Controller
     {
         public readonly GroupRepository _groupRepository;
@@ -46,12 +47,14 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         public IActionResult Add()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Add(GroupDTO dto)
         {
             await _groupRepository.Create(dto);
@@ -59,6 +62,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Edit(ObjectId id)
         {
             if (id == ObjectId.Empty)
@@ -83,6 +87,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Edit(GroupDTO dto)
         {
             await _groupRepository.Update(dto);
@@ -90,6 +95,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Delete(ObjectId id)
         {
             await _groupRepository.DeleteByIdAsync(id);

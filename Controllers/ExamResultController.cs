@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,7 @@ using UniversityAdmission.ViewModels;
 
 namespace UniversityAdmission.Controllers
 {
+    [Authorize]
     public class ExamResultController : Controller
     {
         private readonly ExamResultRepository _examResultRepository;
@@ -50,6 +52,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         [Route("Applicant/{applicantId}/ExamResult/Add")]
         public IActionResult Add(ObjectId applicantId)
         {
@@ -58,6 +61,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         [Route("Applicant/{applicantId}/ExamResult/Add")]
         public async Task<IActionResult> Add(ObjectId applicantId, ExamResultDTO dto)
         {
@@ -66,6 +70,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         [Route("Applicant/{applicantId}/ExamResult/Edit/{examResultId}")] 
         public async Task<IActionResult> Edit(ObjectId examResultId, ObjectId applicantId)
         {
@@ -92,6 +97,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         [Route("Applicant/{applicantId}/ExamResult/Edit/{examResultId}")]
         public async Task<IActionResult> Edit(ObjectId applicantId, ObjectId examResultId, ExamResultDTO dto)
         {
@@ -100,7 +106,8 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
-        [Route("Applicant/{applicantId}/ExamResult/Delete/{examResultId}")] 
+        [Authorize(Policy = "Operator")]
+        [Route("Applicant/{applicantId}/ExamResult/Delete/{examResultId}")]
         public async Task<IActionResult> Delete(ObjectId applicantId, ObjectId examResultId)
         {
             await _examResultRepository.DeleteByIdAsync(examResultId);

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using UniversityAdmission.Models.Entities;
 
 namespace UniversityAdmission.Models.DTO
 {
@@ -24,5 +25,8 @@ namespace UniversityAdmission.Models.DTO
         [RegularExpression(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$", ErrorMessage = "Введіть номер телефону у форматі +380XXXXXXXXX")]
         [DataType(DataType.PhoneNumber)]
         public required string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Виберіть предмет.")]
+        public required Subjects Subject { get; set; }
     }
 }

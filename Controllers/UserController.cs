@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -11,6 +12,7 @@ using UniversityAdmission.Models.DTO;
 
 namespace UniversityAdmission.Controllers
 {
+    [Authorize(Policy = "Owner")]
     public class UserController : Controller
     {
         private readonly UserRepository _userRepository;

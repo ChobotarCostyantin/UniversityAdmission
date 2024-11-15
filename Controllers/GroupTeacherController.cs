@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -14,6 +15,7 @@ using UniversityAdmission.ViewModels;
 
 namespace UniversityAdmission.Controllers
 {
+    [Authorize]
     public class GroupTeacherController : Controller
     {
         private readonly GroupTeacherRepository _groupTeacherRepository;
@@ -51,6 +53,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         [Route("Group/{groupId}/GroupTeacher/Add")]
         public IActionResult Add(ObjectId groupId)
         {
@@ -59,6 +62,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         [Route("Group/{groupId}/GroupTeacher/Add")]
         public async Task<IActionResult> Add(ObjectId groupId, GroupTeacherDTO dto)
         {
@@ -67,6 +71,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         [Route("Group/{groupId}/GroupTeacher/Delete/{groupTeacherId}")] 
         public async Task<IActionResult> Delete(ObjectId groupId, ObjectId groupTeacherId)
         {

@@ -1,0 +1,48 @@
+@using UniversityAdmission.Models.DTO.InfoResponces
+@model List<TenthResponse>
+@{
+    ViewData["Title"] = "Десятий запит";
+    var specialities = Model.OrderBy(s => s.SpecialityName).ToList();
+}
+
+<div class="d-flex flex-column align-items-center w-100">
+    <div class="card text-center bg-light my-5">
+        <div class="card-body">
+            <p class="card-text text-nowrap m-0 me-3">
+                Отримати інформацію про спеціальності (з зазначенням кафедри і факультету)
+                для, яких вступним іспитом є математика.
+            </p>
+        </div>
+    </div>
+
+    @if (!specialities.Any())
+    {
+        <h2 class="fw-bold">Спеціальностей не знайдено</h2>
+    }
+    else
+    {
+        <div class="w-100">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="text-center" style="width: 10%;">Назва</th>
+                        <th scope="col" class="text-center" style="width: 25%;">Опис</th>
+                        <th scope="col" class="text-center" style="width: 25%;">Кафедра</th>
+                        <th scope="col" class="text-center" style="width: 20%;">Факультет</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var speciality in specialities)
+                    {
+                        <tr class="align-middle">
+                            <td class="text-start ps-4">@speciality.SpecialityName</td>
+                            <td class="text-start ps-4 text-break">@speciality.SpecialityDescription</td>
+                            <td class="text-start ps-4">@speciality.DepartmentName</td>
+                            <td class="text-start ps-4">@speciality.FacultyName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

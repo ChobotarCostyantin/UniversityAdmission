@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -12,6 +13,7 @@ using UniversityAdmission.ViewModels;
 
 namespace UniversityAdmission.Controllers
 {
+    [Authorize]
     public class RequiredExamController : Controller
     {
         private readonly RequiredExamRepository _requiredExamRepository;
@@ -49,6 +51,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         [Route("Speciality/{specialityId}/RequiredExam/Add")]
         public IActionResult Add(ObjectId specialityId)
         {
@@ -57,6 +60,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         [Route("Speciality/{specialityId}/RequiredExam/Add")]
         public async Task<IActionResult> Add(ObjectId specialityId, RequiredExamDTO dto)
         {
@@ -65,6 +69,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         [Route("Speciality/{specialityId}/RequiredExam/Delete/{requiredExamId}")]
         public async Task<IActionResult> Delete(ObjectId specialityId, ObjectId requiredExamId)
         {

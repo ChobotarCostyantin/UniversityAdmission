@@ -31,7 +31,8 @@ namespace UniversityAdmission.Data.Repos
                 Id = dto.Id,
                 FullName = dto.FullName,
                 DateOfBirth = dto.DateOfBirth.AddHours(12),
-                PhoneNumber = dto.PhoneNumber
+                PhoneNumber = dto.PhoneNumber,
+                Subject = dto.Subject
             };
             _context.Teachers.Add(teacher);
             await _context.SaveChangesAsync();
@@ -77,6 +78,7 @@ namespace UniversityAdmission.Data.Repos
                 teacher.FullName = dto.FullName;
                 teacher.DateOfBirth = dto.DateOfBirth.AddHours(12);
                 teacher.PhoneNumber = dto.PhoneNumber;
+                teacher.Subject = dto.Subject;
 
                 _context.Teachers.Update(teacher);
                 await _context.SaveChangesAsync();

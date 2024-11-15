@@ -6,9 +6,9 @@ using UniversityAdmission.Models.Entities;
 
 namespace UniversityAdmission.Models.DTO.InfoResponces
 {
-    public class FirstResponse
+    public class EighthResponse
     {
         public List<SelectOptionResponse> ResponseOptions { get; set; } = new();
-        public List<Group> Groups { get; set; } = new();
+        public List<Applicant> Applicants { get; set; } = new();
     }
 }

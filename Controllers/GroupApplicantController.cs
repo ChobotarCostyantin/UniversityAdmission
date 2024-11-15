@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -12,7 +13,7 @@ using UniversityAdmission.ViewModels;
 
 namespace UniversityAdmission.Controllers
 {
-    // [Route("Group/{groupId}/GroupApplicant")]
+    [Authorize]
     public class GroupApplicantController : Controller
     {
         private readonly ApplicantRepository _applicantRepository;
@@ -90,6 +91,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         [Route("Group/{groupId}/GroupApplicant/Add")]
         public async Task<IActionResult> Add(ObjectId groupId)
         {
@@ -119,6 +121,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         [Route("Group/{groupId}/GroupApplicant/Add")]
         public async Task<IActionResult> Add(ObjectId groupId, GroupApplicantDTO dto)
         {
@@ -126,6 +129,7 @@ namespace UniversityAdmission.Controllers
             return RedirectToAction("Index", new { groupId }); 
         }
 
+        [Authorize(Policy = "Operator")]
         [Route("Group/{groupId}/GroupApplicant/Delete/{groupApplicantId}")]
         public async Task<IActionResult> Delete(ObjectId groupId, ObjectId groupApplicantId)
         {

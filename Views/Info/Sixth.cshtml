@@ -1,0 +1,84 @@
+@using UniversityAdmission.Models.DTO.InfoResponces
+@model SixthResponse
+@{
+    ViewData["Title"] = "Шостий запит";
+    var results = Model.Applicants.OrderBy(x => x.FullName).ToList();
+}
+
+<div class="d-flex flex-column align-items-center w-100">
+    <div class="card text-center bg-light my-5">
+        <div class="card-body">
+            <form asp-action="Sixth" method="get">
+                <div class="d-flex align-items-center">
+                    <p class="card-text text-nowrap m-0 me-3">Отримати інформацію про абітурієнтів, що вступають на</p>
+                    <select name="responseType" class="form-select">
+                        @foreach (var option in Model.ResponseOptions)
+                        {
+                            if (option.IsResponseSelected)
+                            {
+                                <option value="@option.Value" selected>@option.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@option.Value">@option.Value</option>
+                            }
+                        }
+                    </select>
+                </div>
+                @if (Model.ResponseOptions[2].IsResponseSelected == false)
+                {
+                    <select name="objectId" class="form-select mt-3">
+                        @if (Model.ResponseOptions[0].IsResponseSelected)
+                        {
+                            @foreach (var faculty in Model.Faculties)
+                            {
+                                <option value="@faculty.Id">@faculty.Name</option>
+                            }
+                        }
+                        else if (Model.ResponseOptions[1].IsResponseSelected)
+                        {
+                            @foreach (var speciality in Model.Specialities)
+                            {
+                                <option value="@speciality.Id">@speciality.Name</option>
+                            }
+                        }
+                    </select>
+                }
+                <button type="submit" class="btn btn-primary mt-3">Отримати</button>
+            </form>
+        </div>
+    </div>
+
+    @if (!Model.Applicants.Any())
+    {
+        <h2 class="fw-bold">Абітурієнтів не знайдено</h2>
+    }
+    else
+    {
+        <div class="w-75">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="text-center">ПІБ</th>
+                        <th scope="col" class="text-center" style="width: 20%;">Дата народження</th>
+                        <th scope="col" class="text-center">Номер телефону</th>
+                        <th scope="col" class="text-center">Адреса проживання</th>
+                        <th scope="col" class="text-center">Пільговик?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var result in results)
+                    {
+                        <tr class="align-middle">
+                            <td class="text-start ps-4">@result.FullName</td>
+                            <td class="text-center">@result.DateOfBirth.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center">@result.PhoneNumber</td>
+                            <td class="text-start ps-4">@result.Address</td>
+                            <td class="text-center">@(result.IsBeneficiary ? "Так" : "Ні")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

@@ -23,5 +23,8 @@ namespace UniversityAdmission.Models.Entities
 
         [BsonElement("phoneNumber")]
         public string PhoneNumber { get; set; } = string.Empty;
+
+        [BsonElement("subject")]
+        public Subjects Subject { get; set; }
     }
 }

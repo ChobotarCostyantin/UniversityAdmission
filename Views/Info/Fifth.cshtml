@@ -1,17 +1,17 @@
 @using UniversityAdmission.Models.DTO.InfoResponces
-@model FirstResponse
+@model FifthResponce
 @{
-    ViewData["Title"] = "Перший запит";
-    var groups = Model.Groups.OrderBy(g => g.Name).ToList();
+    ViewData["Title"] = "П'ятий запит";
+    var results = Model.Result.OrderBy(x => x.Value).ToList();
 }
 
 <div class="d-flex flex-column align-items-center w-100">
     <div class="card text-center bg-light my-5">
         <div class="card-body">
-            <form asp-action="First" method="get">
+            <form asp-action="Fifth" method="get">
                 <div class="d-flex align-items-center">
                     <p class="card-text text-nowrap m-0 me-3">
-                        Вивести інформацію про всі групи абітурієнтів, що складають
+                        Отримати загальну кількість поданих заяв від вступників
                     </p>
                     <select name="responseType" class="form-select">
                         @foreach (var option in Model.ResponseOptions)
@@ -32,9 +32,9 @@
         </div>
     </div>
 
-    @if (!Model.Groups.Any())
+    @if (!Model.Result.Any())
     {
-        <h2 class="fw-bold">Груп не знайдено</h2>
+        <h2 class="fw-bold">Немає результатів</h2>
     }
     else
     {
@@ -43,15 +43,15 @@
                 <thead class="table-dark">
                     <tr>
                         <th scope="col" class="text-center">Назва</th>
-                        <th scope="col" class="text-center" style="width: 20%;">Дата проведення</th>
+                        <th scope="col" class="text-center" style="width: 20%;">Кількість</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var group in groups)
+                    @foreach (var result in results)
                     {
                         <tr class="align-middle">
-                            <td class="text-start ps-4">@group.Name</td>
-                            <td class="text-center">@group.ExamDate.ToString("dd.MM.yyyy")</td>
+                            <td class="text-start ps-4">@result.Key</td>
+                            <td class="text-center">@result.Value</td>
                         </tr>
                     }
                 </tbody>

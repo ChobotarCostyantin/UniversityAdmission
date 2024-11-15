@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -13,6 +14,7 @@ using UniversityAdmission.Services;
 
 namespace UniversityAdmission.Controllers
 {
+    [Authorize]
     public class ExamController : Controller
     {
         private readonly ExamRepository _examRepository;
@@ -53,12 +55,14 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         public IActionResult Add()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Add(ExamDTO dto)
         {
             await _examRepository.Create(dto);
@@ -66,6 +70,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Edit(ObjectId id)
         {
             if (id == ObjectId.Empty)
@@ -92,6 +97,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Edit(ExamDTO dto)
         {
             await _examRepository.Update(dto);
@@ -99,6 +105,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Delete(ObjectId id)
         {
             await _examRepository.DeleteByIdAsync(id);

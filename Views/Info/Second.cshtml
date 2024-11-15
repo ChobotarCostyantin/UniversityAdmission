@@ -9,16 +9,23 @@
     <div class="card text-center bg-light my-5">
         <div class="card-body">
             <p class="card-text text-nowrap m-0 me-3">
-                Вивести інформацію про всі групи, в яких складають екзамени абітурієнти, щовступають на різні спеціальності.
+                Вивести інформацію про всі групи, в яких складають екзамени абітурієнти, щовступають на різні
+                спеціальності.
             </p>
         </div>
     </div>
 
-    <div class="w-75">
-        <table class="table table-bordered table-striped">
+    @if (!Model.Any())
+    {
+        <h2 class="fw-bold">Груп не знайдено</h2>
+    }
+    else
+    {
+        <div class="w-50">
+            <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col" class="text-start ps-4">Назва</th>
+                        <th scope="col" class="text-center">Назва</th>
                         <th scope="col" class="text-center" style="width: 20%;">Дата проведення</th>
                     </tr>
                 </thead>
@@ -32,5 +39,6 @@
                     }
                 </tbody>
             </table>
-    </div>
+        </div>
+    }
 </div>

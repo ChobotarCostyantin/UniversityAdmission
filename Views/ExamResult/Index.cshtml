@@ -31,7 +31,7 @@
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col" class="text-start ps-4" style="width: 20%;">Екзамен</th>
+                        <th scope="col" class="text-center" style="width: 20%;">Екзамен</th>
                         <th scope="col" class="text-center" style="width: 20%;">Предмет</th>
                         <th scope="col" class="text-center" style="width: 10%;">Творчий конкурс?</th>
                         <th scope="col" class="text-center" style="width: 20%;">Мінімальний бал для проходження</th>
@@ -48,7 +48,7 @@
                     {
                         <tr class="align-middle">
                             <td class="text-start ps-4 text-break">@result.Exam!.Name</td>
-                            <td class="text-center text-break">@result.Exam!.Subject</td>
+                            <td class="text-start ps-4 text-break">@result.Exam!.Subject</td>
                             <td class="text-center">@(result.Exam.IsCreativeContest ? "Так" : "Ні")</td>
                             <td class="text-center text-break">@result.Exam.MinScore балів</td>
                             <td class="text-center text-break">@result.Score балів</td>

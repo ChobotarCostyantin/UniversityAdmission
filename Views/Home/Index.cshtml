@@ -1,8 +1,77 @@
-﻿@{
+﻿@using UniversityAdmission.Models.Entities
+@using UniversityAdmission.Data.Repos
+@inject UserRepository userRepository
+@{
     ViewData["Title"] = "Головна сторінка";
+    var user = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @if (user != null)
+    {
+        <div class="my-5">
+            <h1 class="display-4 mb-4">Ласкаво просимо, @user.Login!</h1>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Інформаційна система приймальної комісії</h5>
+                                <p class="card-text">
+                                    Ви маєте доступ до наступних можливостей:
+                                </p>
+                                <ul class="list-unstyled">
+                                    @if (user.Role == Roles.Default)
+                                    {
+                                        <li><i class="bi bi-check-circle-fill text-success"></i>Перегляд бази даних</li>
+                                    }
+                                    else if (user.Role == Roles.Operator)
+                                    {
+                                        <li><i class="bi bi-check-circle-fill text-success"></i>Перегляд бази даних</li>
+                                        <li><i class="bi bi-check-circle-fill text-success"></i>Додавання, редагування та видалення даних</li>
+                                    }
+                                    else if (user.Role == Roles.Administrator)
+                                    {
+                                        <li><i class="bi bi-check-circle-fill text-success"></i>Перегляд бази даних</li>
+                                        <li><i class="bi bi-check-circle-fill text-success"></i>Додавання, редагування та видалення даних</li>
+                                        <li><i class="bi bi-check-circle-fill text-success"></i>Додавання нових користувачів</li>
+                                    }
+                                    else if (user.Role == Roles.Owner)
+                                    {
+                                        <li><i class="bi bi-check-circle-fill text-success"></i>Перегляд бази даних</li>
+                                        <li><i class="bi bi-check-circle-fill text-success"></i>Додавання, редагування та видалення даних</li>
+                                        <li><i class="bi bi-check-circle-fill text-success"></i>Додавання нових користувачів</li>
+                                        <li><i class="bi bi-check-circle-fill text-success"></i>Редагування та видалення користувачів</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="my-5">
+            <h1 class="display-4 mb-4">Вітаємо до інформаційної системи приймальної комісії</h1>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card shadow-sm border-warning">
+                            <div class="card-body">
+                                <div class="text-warning mb-3">
+                                    <i class="bi bi-exclamation-triangle-fill" style="font-size: 2rem;"></i>
+                                </div>
+                                <h5 class="card-title mb-3">Необхідна авторизація</h5>
+                                <p class="card-text">
+                                    Для доступу до бази даних та взаємодії з системою необхідно спочатку авторизуватися.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>

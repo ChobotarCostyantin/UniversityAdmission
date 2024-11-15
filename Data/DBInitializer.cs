@@ -241,7 +241,8 @@ namespace UniversityAdmission.Data
             {
                 FullName = "Комісарчук Володимир Васильович",
                 DateOfBirth = new DateTime(1982, 11, 12).AddHours(12),
-                PhoneNumber = "+380501234567"
+                PhoneNumber = "+380501234567",
+                Subject = Subjects.Математика
             };
             context.Teachers.Add(teacher1);
             context.SaveChanges();
@@ -250,7 +251,8 @@ namespace UniversityAdmission.Data
             {
                 FullName = "Валь Олександр Олександрович",
                 DateOfBirth = new DateTime(1989, 5, 23).AddHours(12),
-                PhoneNumber = "+380501234567"
+                PhoneNumber = "+380501234567",
+                Subject = Subjects.Фізика
             };
             context.Teachers.Add(teacher2);
             context.SaveChanges();

@@ -10,7 +10,7 @@ using UniversityAdmission.Models.Entities;
 
 namespace UniversityAdmission.Models.Entities
 {
-    [Collection("users")]
+    [Collection("keys")]
     public class User
     {
         [BsonId]

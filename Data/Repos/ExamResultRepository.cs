@@ -87,5 +87,25 @@ namespace UniversityAdmission.Data.Repos
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<Dictionary<ObjectId, double>> GetAverageScoresBySpeciality(ObjectId specialityId)
+        {
+            var applicants = await _context.Applicants
+                .Where(a => a.SpecialityId == specialityId)
+                .ToListAsync();
+
+            var examResults = await _context.ExamResults
+                .Where(er => applicants.Select(a => a.Id).Contains(er.ApplicantId))
+                .ToListAsync();
+
+            var averageScores = examResults
+                .GroupBy(er => er.ExamId)
+                .ToDictionary(
+                    group => group.Key,
+                    group => group.Average(er => er.Score)
+                );
+
+            return averageScores;
+        }
     }
 }

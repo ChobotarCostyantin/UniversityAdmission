@@ -1,0 +1,66 @@
+@using UniversityAdmission.Models.DTO.InfoResponces
+@model NinthResponse
+@{
+    ViewData["Title"] = "Девятий запит";
+    var teachers = Model.Teachers.OrderBy(t => t.FullName).ToList();
+}
+
+<div class="d-flex flex-column align-items-center w-100">
+    <div class="card text-center bg-light my-5">
+        <div class="card-body">
+            <form asp-action="Ninth" method="get">
+                <div class="d-flex align-items-center">
+                    <p class="card-text text-nowrap m-0 me-3">
+                        Отримати інформацію про викладачів, які можуть приймати заданий екзамен
+                        згідно своєї діяльності
+                    </p>
+                    <select name="examId" class="form-select">
+                        @foreach (var option in Model.ResponseOptions)
+                        {
+                            if (option.IsSelected)
+                            {
+                                <option value="@option.Id" selected>@option.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@option.Id">@option.Value</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Отримати</button>
+            </form>
+        </div>
+    </div>
+
+    @if (!Model.Teachers.Any())
+    {
+        <h2 class="fw-bold">Викладачів не знайдено</h2>
+    }
+    else
+    {
+        <div class="w-75">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="text-center">ПІБ викладача</th>
+                        <th scope="col" class="text-center">Дата народження</th>
+                        <th scope="col" class="text-center" style="width: 20%;">Номер телефону</th>
+                        <th scope="col" class="text-center" style="width: 15%;">Предмет</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var teacher in teachers)
+                    {
+                        <tr class="align-middle">
+                            <th class="fw-normal text-start ps-4">@teacher.FullName</th>
+                            <th class="fw-normal text-center">@teacher.DateOfBirth.ToString("dd.MM.yyyy")</th>
+                            <th class="fw-normal text-center">@teacher.PhoneNumber</th>
+                            <th class="fw-normal text-center">@teacher.Subject</th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

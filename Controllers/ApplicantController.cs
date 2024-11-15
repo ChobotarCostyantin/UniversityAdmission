@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using UniversityAdmission.Data.Repos;
 using UniversityAdmission.Models.DTO;
+using UniversityAdmission.Models.Entities;
 
 namespace UniversityAdmission.Controllers
 {
+    [Authorize]
     public class ApplicantController : Controller
     {
         private readonly ApplicantRepository _applicantRepository;
@@ -61,12 +64,14 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         public IActionResult Add()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Add(ApplicantDTO dto)
         {
             await _applicantRepository.Create(dto);
@@ -74,6 +79,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Edit(ObjectId id)
         {
             if (id == ObjectId.Empty)
@@ -101,6 +107,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Edit(ApplicantDTO dto)
         {
             await _applicantRepository.Update(dto);
@@ -108,6 +115,7 @@ namespace UniversityAdmission.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Operator")]
         public async Task<IActionResult> Delete(ObjectId id)
         {
             await _applicantRepository.DeleteByIdAsync(id);

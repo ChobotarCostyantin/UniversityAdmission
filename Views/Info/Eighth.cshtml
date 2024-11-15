@@ -1,17 +1,16 @@
 @using UniversityAdmission.Models.DTO.InfoResponces
-@model FirstResponse
+@model EighthResponse
 @{
-    ViewData["Title"] = "Перший запит";
-    var groups = Model.Groups.OrderBy(g => g.Name).ToList();
+    ViewData["Title"] = "Восьмий запит";
 }
 
 <div class="d-flex flex-column align-items-center w-100">
     <div class="card text-center bg-light my-5">
         <div class="card-body">
-            <form asp-action="First" method="get">
+            <form asp-action="Eighth" method="get">
                 <div class="d-flex align-items-center">
                     <p class="card-text text-nowrap m-0 me-3">
-                        Вивести інформацію про всі групи абітурієнтів, що складають
+                        Отримати інформацію про абітурієнтів, які
                     </p>
                     <select name="responseType" class="form-select">
                         @foreach (var option in Model.ResponseOptions)
@@ -32,9 +31,9 @@
         </div>
     </div>
 
-    @if (!Model.Groups.Any())
+    @if (!Model.Applicants.Any())
     {
-        <h2 class="fw-bold">Груп не знайдено</h2>
+        <h2 class="fw-bold">Абітурієнтів не знайдено</h2>
     }
     else
     {
@@ -42,16 +41,22 @@
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col" class="text-center">Назва</th>
-                        <th scope="col" class="text-center" style="width: 20%;">Дата проведення</th>
+                        <th scope="col" class="text-center">ПІБ</th>
+                        <th scope="col" class="text-center" style="width: 20%;">Дата народження</th>
+                        <th scope="col" class="text-center">Номер телефону</th>
+                        <th scope="col" class="text-center">Адреса проживання</th>
+                        <th scope="col" class="text-center">Пільговик?</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var group in groups)
+                    @foreach (var applicants in Model.Applicants)
                     {
                         <tr class="align-middle">
-                            <td class="text-start ps-4">@group.Name</td>
-                            <td class="text-center">@group.ExamDate.ToString("dd.MM.yyyy")</td>
+                            <td class="text-start ps-4">@applicants.FullName</td>
+                            <td class="text-center">@applicants.DateOfBirth.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center">@applicants.PhoneNumber</td>
+                            <td class="text-center">@applicants.Address</td>
+                            <td class="text-center">@(applicants.IsBeneficiary ? "Так" : "Ні")</td>
                         </tr>
                     }
                 </tbody>

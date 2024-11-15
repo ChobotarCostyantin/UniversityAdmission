@@ -34,7 +34,7 @@ public class HomeController : Controller
         return RedirectToAction("Index");
     }
 
-    [Authorize]
+    [Authorize(Policy = "Administrator")]
     [HttpPost]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
