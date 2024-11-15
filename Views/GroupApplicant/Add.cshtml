@@ -1,0 +1,39 @@
+@using MongoDB.Bson
+@using UniversityAdmission.Data.Repos
+@using UniversityAdmission.Models.Entities
+@using UniversityAdmission.Models.DTO
+@model GroupApplicantDTO
+
+@inject GroupApplicantRepository groupApplicantRepository
+
+@{
+    ViewData["Title"] = "Додати абітурієнта";
+    var groupId = ViewContext.RouteData.Values["groupId"];
+    var groupApplicants = groupApplicantRepository.GetGroupApplicantsFromGroup(ObjectId.Parse(groupId!.ToString())).Result;
+}
+
+<div>
+    <h2 class="text-center">Додати абітурієнта до групи</h2>
+    <form asp-controller="GroupApplicant" asp-action="Add" class="w-75 mx-auto d-flex flex-column" novalidate>
+        <input type="hidden" value="@groupId" asp-for="GroupId" />
+        <div class="mb-3">
+            <label class="form-label ms-2 mb-1" asp-for="ApplicantId">Оберіть абітурієнта у якого екзамени обраної
+                спеціальності співпадають з екзаменами в групі</label>
+            <select asp-for="ApplicantId" class="form-control">
+                <option value="">Оберіть абітурієнта</option>
+                @foreach (var applicant in Model.AvailableApplicants)
+                {
+                    if (!groupApplicants.Any(ga => ga.ApplicantId == applicant.Id))
+                    {
+                        <option value="@applicant.Id">@applicant.FullName (@applicant.Speciality!.Name)</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <input type="submit" value="Додати" class="btn btn-primary" />
+            <a asp-controller="GroupApplicant" asp-route-groupId="@groupId" asp-action="Index"
+                class="btn btn-secondary ms-2">Назад</a>
+        </div>
+    </form>
+</div>

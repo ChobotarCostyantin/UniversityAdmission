@@ -13,11 +13,14 @@
 
 <div class="d-flex flex-column align-items-center w-100">
     <h1 class="fw-bold">Список екзаменів для викладача @Model.Teacher.FullName</h1>
-    @if (user != null && user.Role != Roles.Default)
-    {
-        <a type="button" class="btn btn-primary my-3" asp-route-teacherId="@Model.Teacher.Id" asp-controller="TeacherExam"
-            asp-action="Add">Додати екзамен</a>
-    }
+    <div class="d-flex gap-3">
+        @if (user != null && user.Role != Roles.Default)
+        {
+            <a type="button" class="btn btn-primary my-3" asp-route-teacherId="@Model.Teacher.Id" asp-controller="TeacherExam"
+                asp-action="Add">Додати екзамен</a>
+        }
+        <a type="button" class="btn btn-secondary my-3" asp-controller="Teacher" asp-action="Index">Назад</a>
+    </div>
 
     @if (!Model.TeacherExams.Any())
     {
@@ -57,7 +60,7 @@
                                     <form method="post" asp-action="Delete" asp-route-teacherId="@Model.Teacher.Id"
                                         asp-route-teacherExamId="@teacherExam.Id" class="d-inline">
                                         <input type="hidden" name="id" value="@teacherExam.Id" />
-                                        <input type="submit" class="btn btn-danger" value="Видалити" />
+                                        <input type="submit" class="btn btn-danger btn-sm" value="Видалити" />
                                     </form>
                                 </td>
                             }

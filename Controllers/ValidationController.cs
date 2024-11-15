@@ -58,7 +58,7 @@ namespace UniversityAdmission.Controllers
         {
             return Json(_userRepository.IsPasswordCorrect(login, password));
         }
-
+        
         public async Task<IActionResult> ValidateEmailExceptUser(string email, ObjectId userId)
         {
             return Json(await _userRepository.IsEmailTakenExceptUser(email, userId));

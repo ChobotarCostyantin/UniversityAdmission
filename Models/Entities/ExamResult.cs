@@ -23,6 +23,9 @@ namespace UniversityAdmission.Models.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId ExamId { get; set; }
 
+        [BsonIgnore]
+        public Exam? Exam { get; set; }
+
         [BsonElement("score")]
         public uint Score { get; set; }
 

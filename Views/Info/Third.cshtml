@@ -1,0 +1,63 @@
+@using UniversityAdmission.Models.DTO.InfoResponces
+@model ThirdResponse
+@{
+    ViewData["Title"] = "Третий запит";
+    var requiredExams = Model.RequiredExams.OrderBy(g => g.Exam!.Name).ToList();
+}
+
+<div class="d-flex flex-column align-items-center w-100">
+    <div class="card text-center bg-light my-5">
+        <div class="card-body">
+            <form asp-action="Third" method="get">
+                <div class="d-flex align-items-center">
+                    <p class="card-text text-nowrap m-0 me-3">
+                        Вивести перелік дисциплін, які повинні складати в якості іспитів, абітурієнти, які вступають на
+                    </p>
+                    <select name="specialityId" class="form-select">
+                        <option value="">Нікуди</option>
+                        @foreach (var option in Model.ResponseOptions)
+                        {
+                            if (option.IsSelected)
+                            {
+                                <option value="@option.Id" selected>@option.Value</option>
+                            }
+                            else
+                            {
+                                <option value="@option.Id">@option.Value</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Отримати</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="w-75">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="text-start ps-4">
+                        Назва
+                    </th>
+                    <th scope="col" class="text-start ps-4">Предмет</th>
+                    <th scope="col" class="text-center" style="width: 20%;">
+                        Мінімальний бал
+                    </th>
+                    <th scope="col" class="text-center" style="width: 15%;">Творчий конкурс?</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var requiredExam in requiredExams)
+                {
+                    <tr class="align-middle">
+                        <td class="text-start ps-4 text-break">@requiredExam.Exam!.Name</td>
+                        <td class="text-start ps-4 text-break">@requiredExam.Exam.Subject</td>
+                        <td class="text-center text-break">@requiredExam.Exam.MinScore балів</td>
+                        <td class="text-center">@(requiredExam.Exam.IsCreativeContest ? "Так" : "Ні")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -38,5 +38,8 @@ namespace UniversityAdmission.Models.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("specialityId")]
         public ObjectId SpecialityId { get; set; }
+
+        [BsonIgnore]
+        public Speciality? Speciality { get; set; }
     }
 }

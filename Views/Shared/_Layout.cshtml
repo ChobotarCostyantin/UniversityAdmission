@@ -1,5 +1,5 @@
-﻿@using UniversityAdmission.Services
-@inject UserService userService
+﻿@using UniversityAdmission.Data.Repos
+@inject UserRepository userRepository
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,28 +30,62 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home"
                                 asp-action="Index">Головна</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Каталог
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Applicant"
-                                        asp-action="Index">Абітурієнти</a></li>
-                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Teacher"
-                                        asp-action="Index">Викладачі</a></li>
-                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Faculty"
-                                        asp-action="Index">Факультети</a></li>
-                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Department"
-                                        asp-action="Index">Кафедри</a></li>
-                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Speciality"
-                                        asp-action="Index">Спеціальності</a></li>
-                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Exam"
-                                        asp-action="Index">Екзамени</a></li>
-                                <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Group"
-                                        asp-action="Index">Групи</a></li>
-                            </ul>
-                        </li>
+                        @{
+                            var user = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
+                            if (user != null)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Каталог
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Faculty"
+                                                asp-action="Index">Факультети</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Department"
+                                                asp-action="Index">Кафедри</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Speciality"
+                                                asp-action="Index">Спеціальності</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Applicant"
+                                                asp-action="Index">Абітурієнти</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Teacher"
+                                                asp-action="Index">Викладачі</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Exam"
+                                                asp-action="Index">Екзамени</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Group"
+                                                asp-action="Index">Групи</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Інф. Запити
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Info"
+                                                asp-action="First">Перший запит</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Info"
+                                                asp-action="Second">Другий запит</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Info"
+                                                asp-action="Third">Третий запит</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Info"
+                                                asp-action="Fourth">Четвертий запит</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Info"
+                                                asp-action="Fifth">П'ятий запит</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Info"
+                                                asp-action="Sixth">Шостий запит</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Info"
+                                                asp-action="Seventh">Сьомий запит</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Info"
+                                                asp-action="Eighth">Восьмий запит</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Info"
+                                                asp-action="Ninth">Девятий запит</a></li>
+                                        <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Info"
+                                                asp-action="Tenth">Десятий запит</a></li>
+                                    </ul>
+                                </li>
+                            }
+                        }
                     </ul>
                     <partial name="_LoginButtonPartial" />
                 </div>

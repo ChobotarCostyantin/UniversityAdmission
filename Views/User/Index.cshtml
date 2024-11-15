@@ -50,16 +50,16 @@
                                 <span>Оператор</span>
                                 break;
                             case Roles.Default:
-                                <span>Користувач</span>
+                                <span>Гість</span>
                                 break;
                         }
                         </td>
                         <td class="text-center text-nowrap">
-                            <a type="button" class="btn btn-warning @(currentUser?.Role != Roles.Owner ? "disabled" : "")" asp-controller="User" asp-action="Edit"
+                            <a type="button" class="btn btn-warning btn-sm @(currentUser?.Role != Roles.Owner ? "disabled" : "")" asp-controller="User" asp-action="Edit"
                                 asp-route-id="@user.Id">Редагувати</a>
                             <form method="post" asp-action="Delete" class="d-inline">
                                 <input type="hidden" name="id" value="@user.Id" />
-                                <input type="submit" class="btn btn-danger" value="Видалити" disabled="@(user.Role == Roles.Owner)" />
+                                <input type="submit" class="btn btn-danger btn-sm" value="Видалити" disabled="@(user.Role == Roles.Owner)" />
                             </form>
                         </td>
                     </tr>

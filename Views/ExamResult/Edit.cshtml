@@ -1,0 +1,32 @@
+@using MongoDB.Bson
+@using UniversityAdmission.Data.Repos
+@using UniversityAdmission.Models.Entities
+@using UniversityAdmission.Models.DTO
+@model ExamResultDTO
+
+@inject ExamRepository examRepository
+
+@{
+    ViewData["Title"] = "Редагувати результат";
+    var applicantId = ViewContext.RouteData.Values["applicantId"];
+    var examResultId = ViewContext.RouteData.Values["examResultId"];
+}
+
+<div>
+    <h2 class="text-center">Редагувати результат абітурієнта</h2>
+    <form asp-controller="ExamResult" asp-action="Edit" asp-route-examResultId="@examResultId" class="w-75 mx-auto d-flex flex-column" novalidate>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" value="@applicantId" asp-for="ApplicantId" />
+        <input type="hidden" value="@Model.ExamId" asp-for="ExamId" />
+
+        <div class="mb-3">
+            <label class="form-label ms-2 mb-1" asp-for="Score">Оцінка</label>
+            <input type="number" asp-for="Score" class="form-control" />
+            <span asp-validation-for="Score" class="text-danger ms-2"></span>
+        </div>
+        <div class="mb-3">
+            <input type="submit" value="Оновити" class="btn btn-primary" />
+            <a asp-controller="ExamResult" asp-route-applicantId="@applicantId" asp-action="Index" class="btn btn-secondary ms-2">Назад</a>
+        </div>
+    </form>
+</div>

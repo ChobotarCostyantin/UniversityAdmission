@@ -137,6 +137,26 @@ namespace UniversityAdmission.Data
             context.Exams.Add(exam2);
             context.SaveChanges();
 
+            var exam3 = new Exam
+            {
+                Name = "Фізика",
+                Subject = Subjects.Фізика,
+                MinScore = 60,
+                IsCreativeContest = false
+            };
+            context.Exams.Add(exam3);
+            context.SaveChanges();
+
+            var exam4 = new Exam
+            {
+                Name = "Хімія",
+                Subject = Subjects.Хімія,
+                MinScore = 55,
+                IsCreativeContest = false
+            };
+            context.Exams.Add(exam4);
+            context.SaveChanges();
+
             // Add required exams
             var requiredExam1 = new RequiredExam
             {
@@ -152,6 +172,31 @@ namespace UniversityAdmission.Data
                 ExamId = exam2.Id
             };
             context.RequiredExams.Add(requiredExam2);
+            context.SaveChanges();
+
+            var requiredExam3 = new RequiredExam
+            {
+                SpecialityId = speciality2.Id,
+                ExamId = exam1.Id
+            };
+            context.RequiredExams.Add(requiredExam3);
+            context.SaveChanges();
+
+
+            var requiredExam5 = new RequiredExam
+            {
+                SpecialityId = speciality2.Id,
+                ExamId = exam3.Id
+            };
+            context.RequiredExams.Add(requiredExam5);
+            context.SaveChanges();
+
+            var requiredExam6 = new RequiredExam
+            {
+                SpecialityId = speciality1.Id,
+                ExamId = exam4.Id
+            };
+            context.RequiredExams.Add(requiredExam6);
             context.SaveChanges();
 
             // Add applicants
@@ -179,6 +224,18 @@ namespace UniversityAdmission.Data
             context.Applicants.Add(applicant2);
             context.SaveChanges();
 
+            var applicant3 = new Applicant
+            {
+                FullName = "Петренко Олександр Олександрович",
+                DateOfBirth = new DateTime(2003, 5, 14).AddHours(12),
+                PhoneNumber = "+380501234567",
+                Address = "Чернівці",
+                IsBeneficiary = false,
+                SpecialityId = speciality2.Id
+            };
+            context.Applicants.Add(applicant3);
+            context.SaveChanges();
+
             // Add teachers
             var teacher1 = new Teacher
             {
@@ -196,6 +253,135 @@ namespace UniversityAdmission.Data
                 PhoneNumber = "+380501234567"
             };
             context.Teachers.Add(teacher2);
+            context.SaveChanges();
+
+            // Add group
+            var group1 = new Group
+            {
+                Name = "Група №1",
+                ExamDate = new DateTime(2024, 11, 21).AddHours(12)
+            };
+            context.Groups.Add(group1);
+            context.SaveChanges();
+
+            var group2 = new Group
+            {
+                Name = "Група №2",
+                ExamDate = new DateTime(2024, 11, 23).AddHours(12)
+            };
+            context.Groups.Add(group2);
+            context.SaveChanges();
+
+            var groupApplicant1 = new GroupApplicant
+            {
+                GroupId = group1.Id,
+                ApplicantId = applicant1.Id
+            };
+            context.GroupApplicants.Add(groupApplicant1);
+            context.SaveChanges();
+
+            var groupApplicant2 = new GroupApplicant
+            {
+                GroupId = group2.Id,
+                ApplicantId = applicant2.Id
+            };
+            context.GroupApplicants.Add(groupApplicant2);
+            context.SaveChanges();
+
+            var groupApplicant3 = new GroupApplicant
+            {
+                GroupId = group1.Id,
+                ApplicantId = applicant3.Id
+            };
+            context.GroupApplicants.Add(groupApplicant3);
+            context.SaveChanges();
+
+            var groupApplicant4 = new GroupApplicant
+            {
+                GroupId = group2.Id,
+                ApplicantId = applicant3.Id
+            };
+            context.GroupApplicants.Add(groupApplicant4);
+            context.SaveChanges();
+
+            var groupTeacher1 = new GroupTeacher
+            {
+                GroupId = group1.Id,
+                TeacherId = teacher1.Id
+            };
+            context.GroupTeachers.Add(groupTeacher1);
+            context.SaveChanges();
+
+            var groupTeacher2 = new GroupTeacher
+            {
+                GroupId = group2.Id,
+                TeacherId = teacher2.Id
+            };
+            context.GroupTeachers.Add(groupTeacher2);
+            context.SaveChanges();
+
+            var teacherExam1 = new TeacherExam
+            {
+                TeacherId = teacher1.Id,
+                ExamId = exam1.Id
+            };
+            context.TeacherExams.Add(teacherExam1);
+            context.SaveChanges();
+
+            var groupExam1 = new GroupExam
+            {
+                GroupId = group1.Id,
+                ExamId = exam1.Id
+            };
+            context.GroupExams.Add(groupExam1);
+            context.SaveChanges();
+
+            var groupExam2 = new GroupExam
+            {
+                GroupId = group1.Id,
+                ExamId = exam2.Id
+            };
+            context.GroupExams.Add(groupExam2);
+            context.SaveChanges();
+
+            var groupExam3 = new GroupExam
+            {
+                GroupId = group1.Id,
+                ExamId = exam3.Id
+            };
+            context.GroupExams.Add(groupExam3);
+            context.SaveChanges();
+
+            var groupExam4 = new GroupExam
+            {
+                GroupId = group2.Id,
+                ExamId = exam1.Id
+            };
+            context.GroupExams.Add(groupExam4);
+            context.SaveChanges();
+
+            var groupExam5 = new GroupExam
+            {
+                GroupId = group2.Id,
+                ExamId = exam2.Id
+            };
+            context.GroupExams.Add(groupExam5);
+            context.SaveChanges();
+
+            var groupExam6 = new GroupExam
+            {
+                GroupId = group2.Id,
+                ExamId = exam3.Id
+            };
+            context.GroupExams.Add(groupExam6);
+            context.SaveChanges();
+
+            var groupExam7 = new GroupExam
+            {
+                GroupId = group2.Id,
+                ExamId = exam4.Id
+            };
+            context.GroupExams.Add(groupExam7);
             context.SaveChanges();
         }
     }

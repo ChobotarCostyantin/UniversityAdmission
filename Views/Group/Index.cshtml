@@ -67,7 +67,7 @@
                                 }
                             </a>
                         </th>
-                        <th scope="col" class="text-center" style="width: 25%;">Деталі</th>
+                        <th scope="col" class="text-center" style="width: 30%;">Деталі</th>
                         @if (user != null && user.Role != Roles.Default)
                         {
                             <th scope="col" class="text-center" style="width: 20%;">Дії</th>
@@ -80,20 +80,22 @@
                         <tr class="align-middle">
                             <td class="text-start ps-4">@group.Name</td>
                             <td class="text-center">@group.ExamDate.ToString("dd.MM.yyyy")</td>
-                            <td class="text-center d-flex gap-3 justify-content-center">
-                                <a type="button" class="btn btn-primary">Абітурієнти</a>
-                                <a type="button" class="btn btn-primary">Викладачі</a>
-                                <a type="button" class="btn btn-primary" asp-controller="GroupExam" asp-action="Index"
-                                    asp-route-groupId="@group.Id">Екзамени</a>
+                            <td class="text-center d-flex gap-2 justify-content-center">
+                                <a type="button" class="btn btn-primary btn-sm" asp-controller="GroupApplicant" asp-action="Index"
+                                    asp-route-groupId="@group.Id">Перегляд абітурієнтів</a>
+                                <a type="button" class="btn btn-primary btn-sm" asp-controller="GroupTeacher" asp-action="Index"
+                                    asp-route-groupId="@group.Id">Перегляд викладачів</a>
+                                <a type="button" class="btn btn-primary btn-sm" asp-controller="GroupExam" asp-action="Index"
+                                    asp-route-groupId="@group.Id">Перегляд екзаменів</a>
                             </td>
                             @if (user != null && user.Role != Roles.Default)
                             {
                                 <td class="text-center">
-                                    <a type="button" class="btn btn-warning" asp-controller="Group" asp-action="Edit"
+                                    <a type="button" class="btn btn-warning btn-sm" asp-controller="Group" asp-action="Edit"
                                         asp-route-id="@group.Id">Редагувати</a>
                                     <form method="post" asp-action="Delete" class="d-inline">
                                         <input type="hidden" name="id" value="@group.Id" />
-                                        <input type="submit" class="btn btn-danger" value="Видалити" />
+                                        <input type="submit" class="btn btn-danger btn-sm" value="Видалити" />
                                     </form>
                                 </td>
                             }

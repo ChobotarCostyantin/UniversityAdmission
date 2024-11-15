@@ -3,27 +3,27 @@
 @using UniversityAdmission.ViewModels
 @inject UserRepository userRepository
 
-@model GroupAndGroupExamsViewModel
+@model GroupAndGroupTeachersViewModel
 
 @{
-    ViewData["Title"] = "Екзамени";
+    ViewData["Title"] = "Викладачі";
     var user = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
 }
 
 <div class="d-flex flex-column align-items-center w-100">
-    <h1 class="fw-bold">Список екзаменів для групи @Model.Group.Name</h1>
+    <h1 class="fw-bold">Список викладачів для групи @Model.Group.Name</h1>
     <div class="d-flex gap-3">
         @if (user != null && user.Role != Roles.Default)
         {
-            <a type="button" class="btn btn-primary my-3" asp-route-groupId="@Model.Group.Id" asp-controller="GroupExam"
-                asp-action="Add">Додати екзамен</a>
+            <a type="button" class="btn btn-primary my-3" asp-route-groupId="@Model.Group.Id" asp-controller="GroupTeacher"
+                asp-action="Add">Додати викладача</a>
         }
         <a type="button" class="btn btn-secondary my-3" asp-controller="Group" asp-action="Index">Назад</a>
     </div>
 
-    @if (!Model.GroupExams.Any())
+    @if (!Model.GroupTeachers.Any())
     {
-        <h2 class="fw-bold">Екзаменів не знайдено</h2>
+        <h2 class="fw-bold">Викладачів не знайдено</h2>
     }
     else
     {
@@ -31,14 +31,9 @@
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col" class="text-start ps-4">
-                            Назва
-                        </th>
-                        <th scope="col" class="text-center">Предмет</th>
-                        <th scope="col" class="text-center" style="width: 20%;">
-                            Мінімальний бал
-                        </th>
-                        <th scope="col" class="text-center" style="width: 15%;">Творчий конкурс?</th>
+                        <th scope="col" class="text-start ps-4">ПІБ викладача</th>
+                        <th scope="col" class="text-center">Дата народження</th>
+                        <th scope="col" class="text-center">Номер телефону</th>
                         @if (user != null && user.Role != Roles.Default)
                         {
                             <th scope="col" class="text-center" style="width: 20%;">Дії</th>
@@ -46,19 +41,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var groupExam in Model.GroupExams)
+                    @foreach (var groupTeacher in Model.GroupTeachers)
                     {
                         <tr class="align-middle">
-                            <td class="text-start ps-4 text-break">@groupExam.Exam!.Name</td>
-                            <td class="text-center text-break">@groupExam.Exam.Subject</td>
-                            <td class="text-center text-break">@groupExam.Exam.MinScore балів</td>
-                            <td class="text-center">@(groupExam.Exam.IsCreativeContest ? "Так" : "Ні")</td>
+                            <td class="text-start ps-4 text-break">@groupTeacher.Teacher!.FullName</td>
+                            <td class="text-center text-break">@groupTeacher.Teacher.DateOfBirth.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center text-break">@groupTeacher.Teacher.PhoneNumber</td>
                             @if (user != null && user.Role != Roles.Default)
                             {
                                 <td class="text-center text-nowrap">
                                     <form method="post" asp-action="Delete" asp-route-groupId="@Model.Group.Id"
-                                        asp-route-groupExamId="@groupExam.Id" class="d-inline">
-                                        <input type="hidden" name="id" value="@groupExam.Id" />
+                                        asp-route-groupTeacherId="@groupTeacher.Id" class="d-inline">
+                                        <input type="hidden" name="id" value="@groupTeacher.Id" />
                                         <input type="submit" class="btn btn-danger btn-sm" value="Видалити" />
                                     </form>
                                 </td>

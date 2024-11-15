@@ -81,11 +81,11 @@
                             @if (user != null && user.Role != Roles.Default)
                             {
                                 <td class="text-center text-nowrap">
-                                    <a type="button" class="btn btn-warning" asp-controller="Faculty" asp-action="Edit"
+                                    <a type="button" class="btn btn-warning btn-sm" asp-controller="Faculty" asp-action="Edit"
                                         asp-route-id="@faculty.Id">Редагувати</a>
                                     <form method="post" asp-action="Delete" class="d-inline">
                                         <input type="hidden" name="id" value="@faculty.Id" />
-                                        <input type="submit" class="btn btn-danger" value="Видалити" />
+                                        <input type="submit" class="btn btn-danger btn-sm" value="Видалити" />
                                     </form>
                                 </td>
                             }

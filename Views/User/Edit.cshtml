@@ -23,11 +23,12 @@
         <div class="form-group">
             <label asp-for="Role" class="control-label ms-2 mb-1">Роль</label>
             <select asp-for="Role" class="form-control" disabled=@(Model.Role == Roles.Owner)>
-                <option value="Owner" hidden=@(Model.Role != Roles.Owner)>Власник</option>
-                <option value="Administrator">Адміністратор</option>
-                <option value="Operator">Оператор</option>
-                <option value="Default">Гість</option>
+                <option value="@Roles.Owner" hidden=@(Model.Role != Roles.Owner)>Власник</option>
+                <option value="@Roles.Administrator">Адміністратор</option>
+                <option value="@Roles.Operator">Оператор</option>
+                <option value="@Roles.Default">Гість</option>
             </select>
+            <span asp-validation-for="Role" class="text-danger ms-2"></span>
         </div>
         <div class="form-group">
             <label asp-for="Password" class="control-label ms-2 mb-1">Пароль</label>

@@ -1,0 +1,47 @@
+@using MongoDB.Bson
+@using UniversityAdmission.Data.Repos
+@using UniversityAdmission.Models.Entities
+@using UniversityAdmission.Models.DTO
+@model ExamResultDTO
+
+@inject ExamResultRepository examResultRepository
+@inject ApplicantRepository applicantRepository
+@inject RequiredExamRepository requiredExamRepository
+
+@{
+    ViewData["Title"] = "Додати результат";
+    var applicantId = ViewContext.RouteData.Values["applicantId"];
+    var applicant = applicantRepository.GetById(ObjectId.Parse(applicantId!.ToString())).Result;
+    var examResults = examResultRepository.GetExamResultsFromApplicant(ObjectId.Parse(applicantId!.ToString())).Result;
+    var requiredExams = requiredExamRepository.GetRequiredExamsFromSpeciality(applicant!.SpecialityId).Result;
+}
+
+<div>
+    <h2 class="text-center">Додати результат до абітурієнта</h2>
+    <form asp-controller="ExamResult" asp-action="Add" class="w-75 mx-auto d-flex flex-column" novalidate>
+        <input type="hidden" value="@applicantId" asp-for="ApplicantId" />
+        <div class="mb-3">
+            <label class="form-label ms-2 mb-1" asp-for="ExamId">Оберіть екзамен</label>
+            <select asp-for="ExamId" class="form-control">
+                <option value="">Оберіть екзамен</option>
+                @foreach (var requiredExam in requiredExams)
+                {
+                    if (!examResults.Any(er => er.ExamId == requiredExam.ExamId))
+                    {
+                        <option value="@requiredExam.ExamId">@requiredExam.Exam!.Name</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="ExamId" class="text-danger ms-2"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label ms-2 mb-1" asp-for="Score">Оцінка</label>
+            <input type="number" asp-for="Score" class="form-control" />
+            <span asp-validation-for="Score" class="text-danger ms-2"></span>
+        </div>
+        <div class="mb-3">
+            <input type="submit" value="Додати" class="btn btn-primary" />
+            <a asp-controller="Applicant" asp-route-applicantId="@applicantId" asp-action="Index" class="btn btn-secondary ms-2">Назад</a>
+        </div>
+    </form>
+</div>

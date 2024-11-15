@@ -15,12 +15,17 @@ namespace UniversityAdmission.Data.Repos
         private readonly UniversityAdmissionDBContext _context;
         private readonly RequiredExamRepository _requiredExamRepository;
         private readonly TeacherExamRepository _teacherExamRepository;
+        private readonly GroupExamRepository _groupExamRepository;
+        private readonly ExamResultRepository _examResultRepository;
 
-        public ExamRepository(UniversityAdmissionDBContext context, RequiredExamRepository requiredExamRepository, TeacherExamRepository teacherExamRepository)
+        public ExamRepository(UniversityAdmissionDBContext context, RequiredExamRepository requiredExamRepository,
+            TeacherExamRepository teacherExamRepository, GroupExamRepository groupExamRepository, ExamResultRepository examResultRepository)
         {
             _context = context;
             _requiredExamRepository = requiredExamRepository;
             _teacherExamRepository = teacherExamRepository;
+            _groupExamRepository = groupExamRepository;
+            _examResultRepository = examResultRepository;
         }
 
         public async Task Create(ExamDTO dto)
@@ -49,6 +54,18 @@ namespace UniversityAdmission.Data.Repos
             foreach (var requiredExam in requiredExams)
             {
                 await _requiredExamRepository.DeleteByIdAsync(requiredExam.Id);
+            }
+
+            var groupExams = _context.GroupExams.Where(x => x.ExamId == id);
+            foreach (var groupExam in groupExams)
+            {
+                await _groupExamRepository.DeleteByIdAsync(groupExam.Id);
+            }
+
+            var examResults = _context.ExamResults.Where(x => x.ExamId == id);
+            foreach (var examResult in examResults)
+            {
+                await _examResultRepository.DeleteByIdAsync(examResult.Id);
             }
 
             var exam = await _context.Exams.FindAsync(id);

@@ -2,7 +2,7 @@
 @using UniversityAdmission.Data.Repos
 @using UniversityAdmission.ViewModels
 @inject UserRepository userRepository
-@inject RequiredExamRepository requiredExamRepository
+@* @inject RequiredExamRepository requiredExamRepository *@
 
 @model SpecialityAndRequiredExamsViewModel
 
@@ -13,11 +13,14 @@
 
 <div class="d-flex flex-column align-items-center w-100">
     <h1 class="fw-bold">Список екзаменів для спеціальності @Model.Speciality.Name</h1>
-    @if (user != null && user.Role != Roles.Default)
-    {
-        <a type="button" class="btn btn-primary my-3" asp-route-specialityId="@Model.Speciality.Id" asp-controller="RequiredExam"
-            asp-action="Add">Додати екзамен</a>
-    }
+    <div class="d-flex gap-3">
+        @if (user != null && user.Role != Roles.Default)
+        {
+            <a type="button" class="btn btn-primary my-3" asp-route-specialityId="@Model.Speciality.Id" asp-controller="RequiredExam"
+                asp-action="Add">Додати екзамен</a>
+        }
+        <a type="button" class="btn btn-secondary my-3" asp-controller="Speciality" asp-action="Index">Назад</a>
+    </div>
 
     @if (!Model.RequiredExams.Any())
     {
@@ -57,7 +60,7 @@
                                     <form method="post" asp-action="Delete" asp-route-specialityId="@Model.Speciality.Id"
                                         asp-route-requiredExamId="@requiredExam.Id" class="d-inline">
                                         <input type="hidden" name="id" value="@requiredExam.Id" />
-                                        <input type="submit" class="btn btn-danger" value="Видалити" />
+                                        <input type="submit" class="btn btn-danger btn-sm" value="Видалити" />
                                     </form>
                                 </td>
                             }

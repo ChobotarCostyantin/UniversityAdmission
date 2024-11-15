@@ -13,10 +13,15 @@ namespace UniversityAdmission.Data.Repos
     public class ApplicantRepository
     {
         private readonly UniversityAdmissionDBContext _context;
+        private readonly GroupApplicantRepository _groupApplicantRepository;
+        private readonly ExamResultRepository _examResultRepository;
 
-        public ApplicantRepository(UniversityAdmissionDBContext context)
+        public ApplicantRepository(UniversityAdmissionDBContext context, GroupApplicantRepository groupApplicantRepository,
+            ExamResultRepository examResultRepository)
         {
             _context = context;
+            _groupApplicantRepository = groupApplicantRepository;
+            _examResultRepository = examResultRepository;
         }
 
         public async Task Create(ApplicantDTO dto)
@@ -37,6 +42,18 @@ namespace UniversityAdmission.Data.Repos
 
         public async Task DeleteByIdAsync(ObjectId id)
         {
+            var groupApplicants = _context.GroupApplicants.Where(x => x.ApplicantId == id);
+            foreach (var groupApplicant in groupApplicants)
+            {
+                await _groupApplicantRepository.DeleteByIdAsync(groupApplicant.Id);
+            }
+
+            var examResults = _context.ExamResults.Where(x => x.ApplicantId == id);
+            foreach (var examResult in examResults)
+            {
+                await _examResultRepository.DeleteByIdAsync(examResult.Id);
+            }
+
             var applicant = await _context.Applicants.FindAsync(id);
             if (applicant != null)
             {
@@ -47,12 +64,22 @@ namespace UniversityAdmission.Data.Repos
 
         public async Task<List<Applicant>> GetAll()
         {
-            return await _context.Applicants.ToListAsync();
+            var applicants = await _context.Applicants.ToListAsync();
+            foreach (var applicant in applicants)
+            {
+                applicant.Speciality = await _context.Specialities.FirstOrDefaultAsync(x => x.Id == applicant.SpecialityId);
+            }
+            return applicants;
         }
 
         public async Task<Applicant?> GetById(ObjectId id)
         {
-            return await _context.Applicants.FirstOrDefaultAsync(x => x.Id == id);
+            var applicant = await _context.Applicants.FirstOrDefaultAsync(x => x.Id == id);
+            if (applicant != null)
+            {
+                applicant.Speciality = await _context.Specialities.FirstOrDefaultAsync(x => x.Id == applicant.SpecialityId);
+            }
+            return applicant;
         }
 
         public async Task Update(ApplicantDTO dto)

@@ -13,10 +13,17 @@ namespace UniversityAdmission.Data.Repos
     public class GroupRepository
     {
         private readonly UniversityAdmissionDBContext _context;
+        private readonly GroupExamRepository _groupExamRepository;
+        private readonly GroupTeacherRepository _groupTeacherRepository;
+        private readonly GroupApplicantRepository _groupApplicantRepository;
 
-        public GroupRepository(UniversityAdmissionDBContext context)
+        public GroupRepository(UniversityAdmissionDBContext context, GroupExamRepository groupExamRepository,
+            GroupTeacherRepository groupTeacherRepository, GroupApplicantRepository groupApplicantRepository)
         {
             _context = context;
+            _groupExamRepository = groupExamRepository;
+            _groupTeacherRepository = groupTeacherRepository;
+            _groupApplicantRepository = groupApplicantRepository;
         }
 
         public async Task Create(GroupDTO dto)
@@ -33,7 +40,24 @@ namespace UniversityAdmission.Data.Repos
 
         public async Task DeleteByIdAsync(ObjectId id)
         {
-            // TODO: groupApplicants, groupExams, groupTeachers deletion
+            var groupExams = _context.GroupExams.Where(x => x.GroupId == id);
+            foreach (var groupExam in groupExams)
+            {
+                await _groupExamRepository.DeleteByIdAsync(groupExam.Id);
+            }
+
+            var groupTeachers = _context.GroupTeachers.Where(x => x.GroupId == id);
+            foreach (var groupTeacher in groupTeachers)
+            {
+                await _groupTeacherRepository.DeleteByIdAsync(groupTeacher.Id);
+            }
+            
+            var groupApplicants = _context.GroupApplicants.Where(x => x.GroupId == id);
+            foreach (var groupApplicant in groupApplicants)
+            {
+                await _groupApplicantRepository.DeleteByIdAsync(groupApplicant.Id);
+            }
+
             var group = await _context.Groups.FindAsync(id);
             if (group != null)
             {

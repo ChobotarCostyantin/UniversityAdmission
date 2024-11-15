@@ -22,5 +22,8 @@ namespace UniversityAdmission.Models.Entities
         [BsonElement("applicantId")]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId ApplicantId { get; set; }
+
+        [BsonIgnore]
+        public Applicant? Applicant { get; set; }
     }
 }

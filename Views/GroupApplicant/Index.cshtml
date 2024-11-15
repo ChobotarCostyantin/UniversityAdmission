@@ -1,19 +1,26 @@
 @using UniversityAdmission.Models.Entities
 @using MongoDB.Bson
 @using UniversityAdmission.Data.Repos
+@using UniversityAdmission.ViewModels
 @inject UserRepository userRepository
-@model List<Applicant>
+
+@model GroupAndGroupApplicantsViewModel
+
 @{
-    ViewData["Title"] = "Список абітурієнтів";
+    ViewData["Title"] = "Абітурієнти";
     var user = userRepository.GetUserByToken(Context.Request.Cookies["access-cookie"]!);
 }
 
 <div class="d-flex flex-column align-items-center w-100">
-    <h1 class="fw-bold">Список абітурієнтів</h1>
-    @if (user != null && user.Role != Roles.Default)
-    {
-        <a type="button" class="btn btn-primary my-3" asp-controller="Applicant" asp-action="Add">Додати абітурієнта</a>
-    }
+    <h1 class="fw-bold">Список абітурієнтів для групи @Model.Group.Name</h1>
+    <div class="d-flex gap-3">
+        @if (user != null && user.Role != Roles.Default)
+        {
+            <a type="button" class="btn btn-primary my-3" asp-route-groupId="@Model.Group.Id" asp-controller="GroupApplicant"
+                asp-action="Add">Додати абітурієнта</a>
+        }
+        <a type="button" class="btn btn-secondary my-3" asp-controller="Group" asp-action="Index">Назад</a>
+    </div>
 
     <!-- Форма пошуку та фільтрації -->
     <div class="w-100 mb-3">
@@ -45,13 +52,13 @@
     </div>
 
     <!-- Таблиця абітурієнтів -->
-    @if (!Model.Any())
+    @if (!Model.GroupApplicants.Any())
     {
-        <h2 class="fw-bold">Абітурієнтів не знайдено.</h2>
+        <h2 class="fw-bold">Абітурієнтів не знайдено</h2>
     }
     else
     {
-        <div class='w-100'>
+        <div class="w-100">
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
@@ -97,7 +104,6 @@
                         <th scope="col" class="text-center" style="width: 20%;">Адреса</th>
                         <th scope="col" class="text-center" style="width: 5%;">Пільговик?</th>
                         <th scope="col" class="text-center" style="width: 20%;">Спеціальність</th>
-                        <th scope="col" class="text-center" style="width: 15%;">Результати</th>
                         @if (user != null && user.Role != Roles.Default)
                         {
                             <th scope="col" class="text-center" style="width: 20%;">Дії</th>
@@ -105,29 +111,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var applicant in Model)
+                    @foreach (var groupApplicant in Model.GroupApplicants)
                     {
-                        var speciality = ViewBag.Specialities[applicant.SpecialityId];
+                        var speciality = ViewBag.Specialities[groupApplicant.Applicant!.SpecialityId];
                         <tr class="align-middle">
-                            <td class="text-start ps-4 text-break">@applicant.FullName</td>
-                            <td class="text-center text-break">@applicant.DateOfBirth.ToString("dd.MM.yyyy")</td>
-                            <td class="text-center text-break">@applicant.PhoneNumber</td>
-                            <td class="text-center text-break">@applicant.Address</td>
-                            <td class="text-center">@(applicant.IsBeneficiary ? "Так" : "Ні")</td>
+                            <td class="text-start ps-4 text-break">@groupApplicant.Applicant.FullName</td>
+                            <td class="text-center text-break">@groupApplicant.Applicant.DateOfBirth.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center text-break">@groupApplicant.Applicant.PhoneNumber</td>
+                            <td class="text-center text-break">@groupApplicant.Applicant.Address</td>
+                            <td class="text-center">@(groupApplicant.Applicant.IsBeneficiary ? "Так" : "Ні")</td>
                             <td class="text-center text-break">@speciality.Name</td>
-                            <td class="text-center text-break">
-                                <a asp-controller="ExamResult" asp-action="Index" asp-route-applicantId="@applicant.Id"
-                                    class="btn btn-primary btn-sm">
-                                    Екзамени
-                                </a>
-                            </td>
                             @if (user != null && user.Role != Roles.Default)
                             {
                                 <td class="text-center text-nowrap">
-                                    <a asp-controller="Applicant" asp-action="Edit" asp-route-id="@applicant.Id"
-                                        class="btn btn-warning btn-sm">Редагувати</a>
-                                    <form asp-action="Delete" method="post" class="d-inline">
-                                        <input type="hidden" name="id" value="@applicant.Id" />
+                                    <form method="post" asp-action="Delete" asp-route-groupId="@Model.Group.Id"
+                                        asp-route-groupApplicantId="@groupApplicant.Id" class="d-inline">
+                                        <input type="hidden" name="id" value="@groupApplicant.Id" />
                                         <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
                                     </form>
                                 </td>
@@ -138,4 +137,3 @@
             </table>
         </div>
     }
-</div>

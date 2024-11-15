@@ -14,11 +14,14 @@ namespace UniversityAdmission.Data.Repos
     {
         private readonly UniversityAdmissionDBContext _context;
         private readonly TeacherExamRepository _teacherExamRepository;
+        private readonly GroupTeacherRepository _groupTeacherRepository;
 
-        public TeacherRepository(UniversityAdmissionDBContext context, TeacherExamRepository teacherExamRepository)
+        public TeacherRepository(UniversityAdmissionDBContext context, TeacherExamRepository teacherExamRepository,
+            GroupTeacherRepository groupTeacherRepository)
         {
             _context = context;
             _teacherExamRepository = teacherExamRepository;
+            _groupTeacherRepository = groupTeacherRepository;
         }
 
         public async Task Create(TeacherDTO dto)
@@ -36,7 +39,11 @@ namespace UniversityAdmission.Data.Repos
 
         public async Task DeleteByIdAsync(ObjectId id)
         {
-            // var groupTeachers = 
+            var groupTeachers = _context.GroupTeachers.Where(x => x.TeacherId == id);
+            foreach (var groupTeacher in groupTeachers)
+            {
+                await _groupTeacherRepository.DeleteByIdAsync(groupTeacher.Id);
+            }
 
             var teacherExams = _context.TeacherExams.Where(x => x.TeacherId == id);
             foreach (var teacherExam in teacherExams)

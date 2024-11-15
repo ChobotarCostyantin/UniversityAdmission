@@ -20,5 +20,8 @@ namespace UniversityAdmission.Models.Entities
 
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId GroupId { get; set; }
+
+        [BsonIgnore]
+        public Teacher? Teacher { get; set; }
     }
 }

@@ -16,12 +16,10 @@ namespace UniversityAdmission.Controllers
     public class ExamController : Controller
     {
         private readonly ExamRepository _examRepository;
-        private readonly RequiredExamRepository _requiredExamRepository;
 
-        public ExamController(ExamRepository examRepository, RequiredExamRepository requiredExamRepository)
+        public ExamController(ExamRepository examRepository)
         {
             _examRepository = examRepository;
-            _requiredExamRepository = requiredExamRepository;
         }
 
         public async Task<IActionResult> Index(string searchString, string sortOrder)

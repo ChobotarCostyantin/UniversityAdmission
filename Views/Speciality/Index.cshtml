@@ -118,17 +118,17 @@
                             <td class="text-start ps-4 text-break">@speciality.Description</td>
                             <td class="text-start ps-4 text-break">@department.Name</td>
                             <td class="text-center text-nowrap">
-                                <a type="button" class="btn btn-primary" asp-route-specialityId="@speciality.Id"
+                                <a type="button" class="btn btn-primary btn-sm" asp-route-specialityId="@speciality.Id"
                                     asp-controller="RequiredExam" asp-action="Index">Перегляд екзаменів</a>
                             </td>
                             @if (user != null && user.Role != Roles.Default)
                             {
                                 <td class="text-center text-nowrap">
-                                    <a type="button" class="btn btn-warning" asp-controller="Speciality" asp-action="Edit"
+                                    <a type="button" class="btn btn-warning btn-sm" asp-controller="Speciality" asp-action="Edit"
                                         asp-route-id="@speciality.Id">Редагувати</a>
                                     <form method="post" asp-action="Delete" class="d-inline">
                                         <input type="hidden" name="id" value="@speciality.Id" />
-                                        <input type="submit" class="btn btn-danger" value="Видалити" />
+                                        <input type="submit" class="btn btn-danger btn-sm" value="Видалити" />
                                     </form>
                                 </td>
                             }

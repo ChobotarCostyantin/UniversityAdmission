@@ -90,14 +90,14 @@
                             <td class="text-center text-break">@teacher.DateOfBirth.ToString("dd.MM.yyyy")</td>
                             <td class="text-center text-break">@teacher.PhoneNumber</td>
                             <td class="text-center text-nowrap">
-                                <a type="button" class="btn btn-primary" asp-route-teacherId="@teacher.Id"
+                                <a type="button" class="btn btn-primary btn-sm" asp-route-teacherId="@teacher.Id"
                                     asp-controller="TeacherExam" asp-action="Index">Перегляд екзаменів</a>
                             </td>
                             @if (user != null && user.Role != Roles.Default)
                             {
                                 <td class="text-center text-nowrap">
                                     <a asp-controller="Teacher" asp-action="Edit" asp-route-id="@teacher.Id"
-                                        class="btn btn-warning btn-sm">Редагувати</a>
+                                        class="btn btn-warning btn-sm btn-sm">Редагувати</a>
                                     <form asp-action="Delete" method="post" class="d-inline">
                                         <input type="hidden" name="id" value="@teacher.Id" />
                                         <button type="submit" class="btn btn-danger btn-sm">Видалити</button>

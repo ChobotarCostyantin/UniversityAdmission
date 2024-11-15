@@ -1,0 +1,39 @@
+@using MongoDB.Bson
+@using UniversityAdmission.Data.Repos
+@using UniversityAdmission.Models.Entities
+@using UniversityAdmission.Models.DTO
+@model GroupTeacherDTO
+
+@inject TeacherRepository teacherRepository
+@inject GroupTeacherRepository groupTeacherRepository
+
+@{
+    ViewData["Title"] = "Додати викладача";
+    var teachers = teacherRepository.GetAll().Result;
+    var groupId = ViewContext.RouteData.Values["groupId"];
+    var groupTeachers = groupTeacherRepository.GetGroupTeachersFromGroup(ObjectId.Parse(groupId!.ToString())).Result;
+}
+
+<div>
+    <h2 class="text-center">Додати викладача до групи</h2>
+    <form asp-controller="GroupTeacher" asp-action="Add" class="w-75 mx-auto d-flex flex-column" novalidate>
+        <input type="hidden" value="@groupId" asp-for="GroupId" />
+        <div class="mb-3">
+            <label class="form-label ms-2 mb-1" asp-for="TeacherId">Оберіть викладача</label>
+            <select asp-for="TeacherId" class="form-control">
+                <option value="">Оберіть викладача</option>
+                @foreach (var teacher in teachers)
+                {
+                    if (!groupTeachers.Any(gt => gt.TeacherId == teacher.Id))
+                    {
+                        <option value="@teacher.Id">@teacher.FullName</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <input type="submit" value="Додати" class="btn btn-primary" />
+            <a asp-controller="GroupTeacher" asp-route-groupId="@groupId" asp-action="Index" class="btn btn-secondary ms-2">Назад</a>
+        </div>
+    </form>
+</div>
