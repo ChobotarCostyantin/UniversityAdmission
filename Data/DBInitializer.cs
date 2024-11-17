@@ -33,8 +33,8 @@ namespace UniversityAdmission.Data
 
             var user2 = new User
             {
-                Login = "admin",
-                Email = "admin@example.com",
+                Login = "JohnDoeAdmin",
+                Email = "johnDoe@example.com",
                 Password = "1234",
                 Role = Roles.Administrator
             };
@@ -43,8 +43,8 @@ namespace UniversityAdmission.Data
 
             var user3 = new User
             {
-                Login = "operator",
-                Email = "operator@example.com",
+                Login = "JaneDoeOperator",
+                Email = "janeDoe@example.com",
                 Password = "1234",
                 Role = Roles.Operator
             };
@@ -53,8 +53,8 @@ namespace UniversityAdmission.Data
 
             var user4 = new User
             {
-                Login = "user",
-                Email = "user@example.com",
+                Login = "JohnSmithDefault",
+                Email = "johnSmith@example.com",
                 Password = "1234",
                 Role = Roles.Default
             };

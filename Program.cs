@@ -49,6 +49,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// * Authorization
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Owner", policy => policy.AddRequirements(
         new PermissionRequirement(Permission.OwnerOnly)
